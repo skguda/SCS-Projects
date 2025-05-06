@@ -1,0 +1,76 @@
+Client has used the SCS before.
+
+Background: 
+Client is supporting an honors project for her student Chris Ghita, 
+Chris is the one who conceptulized the whole thing. 
+
+Basically the idea of the project it to gauge the academic and professional benefits of case competitons with financial components. 
+
+They do this through a survey, did students find they had a benefit from partifipating
+
+They aren't doing a pre test hence it is a retrospective
+
+They came to the SCS to see if their survey is valid and questions are ok
+
+Case competitions are ficticious or real life scenarios of business scenarios. 
+
+They run the case competitions through the client's course. You basically have abusiness scenario, pitch + presentation, and give recommendations in business proceedings
+
+Are case competitions optional? -- It depends, mandatory for class, but if its a cocurricular its optional. 
+
+The survey is a little bit diverse, in that it asks students about all case competitions they participated in. They might partner with classes in the business department which mandate a competition, but they are looking to broaden the diversity of the samples. 
+
+Focusing on the different backgrounds yields better results, and the survery can mean different things to different people. 
+
+GU: 
+There could be different varieties of case competitions, its on the survey taker to determine the worth of the case competition. 
+
+The baseline is a blurred, whatever conclution they get in the end might not mean much. If the baseline is clear, then the conclusion might be more conclusive. 
+
+Mayhook:
+They acknloedge that they might not get a clean conclusion. 
+
+Gu: 
+The baseline isn't clear for the participants. Since there are many kinds of case competitions. The broad baseline makes it hard to tell a story. This is one possible limitation of the study.
+
+Regarding pre/post study, its ok however it is done with identical questions, the survey doesn't have that information. Hence the survey doesn't have this information. 
+
+Regression is possible to do the analysis, however if they wanted to do sample statistics or relations among the covariates those can be done under a very general frame work. 
+
+What they want to know under specific framework, then ultimately it is challenging to see under their current design. 
+
+Qualitative analysis isn't the focus of what we do. 
+
+The description of the survey is too long, this is more of a human factors problem as this could disuade participants to participate. 
+
+Gu: 
+Are clients interested in reading the likert scale questions one at a time or in an aggregate? Questions 1-5 contain multiple subscales. Does client care about aggregates, individuals, or grouped a few questions together? Listing them individually or in groups varies a lot. 
+
+Format 5,9,11 are all subscales, but if some of those individual questions want to view them by themselves -> seperate then. But aggregate -> Leave them as is. FOr the analysis itself, however we don't know enough to make a suggestion yet 
+
+To do the specific research questions, we can do regression, anova, etc. With likert scale its ordinal if individuals, and continuous if aggregated. The list all that apple is multiple binary basically. 
+
+To give specific analysis advice, then we need specific research questions. 
+
+Gu worries that the baseline isn't uniform which he feels will be the knife in the analysis. Additionalyl the questions are too complicated and not clear to survey partifipants. 
+
+CLient: Need to address how to mkae their survey more approachable to non uniform audience, and make likert scale less wordy + seperate more of the highlighed questions. 
+
+They also need to come up with specific research questions, only then can we give advice.
+
+If they deploy their survey they have to get IRB approval and find out ways to privatize the infomation of the participants
+
+For the different schools, ultimately we need to do analysis on the different schools. Mostly to get more numbers, but they need to work with what they have but the more is better. 
+
+They'll probably compare populations if they have enough respondants. But based on the backgrounds they can't draw too much from the test. Uniform backgrounds can give more relevanve to the test. 
+
+Question 8 could serve as an ordinal repsonse variable if regression could be used. However it isn't definite. 
+
+Client should be changed to Christopher Ghita, with Zoeanna Mayhook as the faculty 
+
+
+Our two main concerns are separate.
+
+The non-uniform background could render the study worthless.  The term “case competition” refers to a broad spectrum of things and the target audience could also have greatly varying past experiences with “case competitions,” so the survey responses could be responding to a diverse variety of “treatments.”  This remains a fundamental concern even with a perfectly designed survey.
+
+The lengthy, hard to comprehend questions are technical problems, relatively easy to fix.

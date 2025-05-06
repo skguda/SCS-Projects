@@ -1,0 +1,106 @@
+SCS 24-064 Follow Up meeting: 
+2/12/25
+Attendees: Sumeeth, Chris Ghitta, Zoeanna Mayhook, Chong Gu
+
+===========================================
+Background: 
+They emailed a lot of students to have a diverse sampling population
+
+They are looking at the impact of case competition of first year student, to ensure that the students  likely don't have experience with competitions.
+They are concerned with the finance components of case competitions
+They have 76 respondents. 
+
+Surver has 4 compoents: 
+1. Demographics
+2. Academic concepts
+3. Behavorial Components
+4. Finance / Ethics components
+They have all the data, and while they have some rough idea for analysis however they need help with more formal analysis and statistical testing
+
+The population participated in the same case competition. They didn't have any case competition experience before. 
+
+It is a fairly clean sample. 
+
+They took the SCS's advice to level the playing ground with the basleine for analysis and data storytelling. 
+
+They took into consideration that some students have experience with case compatitions. In section 1 of the survey. 
+
+For the likert scale questions which have 3 or more sections, the scores will be aggregated. 
+
+The single item questions will be ordinal. 
+
+The select all that apply questions will be converted into multiple binary
+
+Zoe: They might consider the descriptive statistics but are open to the multiple binary outcomes. 
+
+For the actual multiple choice: Ordinal -> Likert scale, Nominal -> Categorial variable
+
+Open ended question: Unless you have ways of turning the data into characteorization ,can't analyze quantitatively
+
+Can ignore the qualtative question.
+
+
+========================================
+Problem: 
+
+For the analysis it depends on the specific research question. 
+
+Suppose for one of the question, you might want to see how the factors impact the response would follow a regression method.
+
+If they are interested in a pair of items relate to each other and if they are numerical like subscales, we could plot them in a scatter / jitter plot to show the correlations.
+
+You can see if there is a linear or polynomial pattern. 
+
+If they are interested in the relations between 2 categorical factors, to 2-way table analysis and get the chi-square test statistic. 
+
+If multiple traits want to be analyzed (2 quant, 2 cat), can customize the scatter plots to show how the categorical variables compare to each other. 
+
+Don't do formal analysis yet, visualize and do the EDA first and identify any raw patterns within the data itself. 
+
+If they isolate a specific response and to see if they want to see the behaviours in the other factors, this will be a regression question. 
+
+Regression needs to include everything to minimize the noise. 
+
+If they want to see corr between 2 variables, use a scatter plot + 2 way table. In case they are interested in wether those correlations may vary with certain other factors, then a typical way would be to segregate the data (not a good idea due to low cardinality). 
+However if they isolate the groups, do several pair wise comparisons assuming they have plenty of data. 
+
+They need to come up with specific resarch questions, and we can do more thorough analysis. 
+
+Zoe: They are considering regression on the responses
+
+If they are checking a pre and post analysis then they need to put factors into the independent cariables. 
+
+The clioent asked us to impose our subject matter knowledge into the project
+
+If there are multiple likert scale in one question, we usually aggregate and treat as continupus. 
+
+If it is single likert scale it would be ordinal. 
+
+If it is independent variables, treat as categorical. Treating correlation between 2 likert scales would need poly correlate correlation assuming theyu are cut from the same latent. 
+
+Likert scale by nature is univariate. 
+
+Considering a likert scale in a model is dependent on the context. 
+
+They want to finish this project by mid march. 
+
+Gu: Identify a specific research question, and do the EDA with this researcvh question in mind. 
+
+Will mine the data for a pattern, but we would have a hypothesis in mind when we take a look at the data itself. 
+
+We don't need to look at all the variables, come up with the research questions using a few of the variables and we can analyze the data with these questions in  mind
+
+Plotting the data tends to convey the story of the data better than numbers. 
+
+
+
+=======================================
+Professor Comments: 
+
+
+
+
+=========================================
+Recommendations: 
+
+

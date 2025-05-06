@@ -1,0 +1,104 @@
+Date: 10/22/24
+Attendees: Sumeeth Guda, Barbara Young, Dr. Chong Gu
+
+Background: 
+There is no student involved in the project. This is a follow up study to a previous survey. 
+
+Survey with 6 likert scale questions, and an observational question. 
+
+The first study was done with collaboration with someone from ENE, they 
+
+Looking for time for the types of activities occuring, but there are some chaos with the students and TA involvement
+
+Client is observing the classroom and tracking the amount of occurances over 2 minute intervals. 
+
+The survey was conducted by the students, and the client's occurance tracking is done on one particular session. 
+
+FIrst study had the QR code integrated in end of the semester course evaluations. (Survey), by flyer by IRB orders. 
+
+Objective: Client has 2 rooms which are almost identical, but one holds 180 studnets, the other holds 108 students. One has windows, the other borrows light. Client does 
+not want to compare the rooms. She is concerned with the layout of the rooms in the current study against the 2 rooms in the previous study. 
+
+Based on the previous rooms, she created a protoypye design to take into accound the recommendations from the studnets and instructors. 
+
+We are comparing the current rooms against the previous rooms, the previous rooms were totaly different. (Compare room A, room B from rpevious study to room C from current study)
+
+There were 296 students in previous study. 103 in current study. 
+
+Previous study was with the engineering program ENGR 131 which was a design studio class. They met in the 2 rooms. Same students and same teachers meet in the 2 different rooms throughout the rooms.
+The previous survey had two different rooms. The data was paired with respect to the two rooms. 
+
+The thirs one is entirely different individuals. 
+
+The only change in the current survey from the previous were the room names and the inclusion of the TA's in the likert scale by including instructors in the likert scale.
+
+For the likert scale questions, the client would like to aggregate the results into the group. But she doesn't know if she wants to aggregate the data based on the likert scale and the room.
+
+She doesn't know if the students were part of the previous survey based on each of the rooms. 
+
+IS client interested in the individual 6 likert scale questions, a subset of individual questions with the remaining is aggregated, or aggregate the whole thing. 
+
+She is interested in the individual questions, possible might look at pairs of questions. 
+
+Most of the studetns were science based, with a handful of liberal arts students in the current study. The previous study were mostly engineering students. 
+
+Gu: The classroom could be confounded by the type of class. The differences could be attributed to the room setting, the subject, or the types of activies happening. 
+
+Gu: The interpretation could be a little bit tricky. 
+
+BY: Intersted in the open ended question as well. 
+
+Gu: More survey resutls are better, but we could analyze now. 
+
+Model: 
+(Satisfaction) = (question) + room_i + individual_j + subject + error (Assuming continuous)
+
+For likert scale we treat this as an ordinal model. 
+
+Lets try this model for the data, and potentially look at the interaction terms. Use ordinal regression, include the factors, and itneraction. Use the 3 rooms (see diff between room 3, room 4, etc). More data is better. 
+
+Client has 103 students total in current study (60/40 split). Gu wants enough data for the current study to be same or similar to the previous study. If she gets more engineering students, then the subject effect could become more equal. 
+
+What Gu worries about is the confounding, she is looking at difference with the rooms but the other factors can confound the response. 
+
+Client did not find any trends with the measures of the data. But comparing the engagement is not as trivial.
+
+Gu: Whatever difrerence we observe in the survey might not be the difference of just the room. If it is the same courses we wouldn't need to worry about it. If it is different courses we need enough base for comparison. If needed, exclude certain people from the survey to minimize the subject effect so that the only effect will be the room difference. 
+
+It will be easier if the later course are also engineering courses. 
+
+Current study is trackign the instructional activies and how the students engage with them. From other studies, to measure engagement it measured eye contact. 
+
+Look at the survey plot the respnse to each question. Plot together the 4 rooms, and see how many differences between the positions. The later ones might have different scattering. 
+y axis is score, x axis is the 4 groups (or) x and y are both responses to differeny questions but spread out and use different colors to mark different groups. 
+
+Client wants the later, useful to measuring the qualitativeness. 
+
+6 questions like 6 variables and create a jitter plot matrix. For the 4 rooms, use 4 different colors. IF the scatter plot matrix has terrible resolution look at the pairs of plots. 
+
+She has more questions than hypothesis, its a multifacetted question hence why she used the qualitative information gathering (survey, engagement, interview, behaviour map). For the survey
+itself, if there existed differences between the rooms, studetns will write about it. 
+
+Gu: Cannot seperate the room factors from the response. This confounds the data. 
+
+Gu: Use the data from previous study data (The 296 study) on the model, and see 
+how different the responses the rooms are. The same individuals are in the same room, the rooms are being compared. At least for this cohort we can see if the room has any effect on the engagment. Very clean previous data for modelling. 
+
+Survey experience is based on the aggregate of the semester itself. Previous data is a lot cleaner over there is pairing, current data doesn't have any homogeneity with student engagemtn .
+
+
+
+
+
+
+
+
+Recommendations: 
+
+
+
+
+Responsibilities: 
+Client: 
+
+Consultant: 

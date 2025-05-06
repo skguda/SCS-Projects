@@ -1,0 +1,220 @@
+---
+title: "SCS 24-107 Plots"
+author: "Sumeeth Guda"
+date: "2025-02-19"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(ggplot2)
+library(GGally)
+library(dplyr)
+library(readxl)
+library(tidyr)
+```
+
+
+## Read data files
+```{r}
+armsB061 = read_excel("N:\\SCS\\SCS Client Files\\Active Spring 2025 Clients\\24-107 Young\\FYE Student Satisfaction_NoQual.xlsx", sheet = "ARMS_B061")
+armsB098 = read_excel("N:\\SCS\\SCS Client Files\\Active Spring 2025 Clients\\24-107 Young\\FYE Student Satisfaction_NoQual.xlsx", sheet = "ARMS_B098")
+walc1018 = read_excel("N:\\SCS\\SCS Client Files\\Active Spring 2025 Clients\\24-107 Young\\Student Classroom Satisfaction_WALC_ALL.xlsx", sheet = "WALC_1018")
+walc1132 = read_excel("N:\\SCS\\SCS Client Files\\Active Spring 2025 Clients\\24-107 Young\\Student Classroom Satisfaction_WALC_ALL.xlsx", sheet = "WALC_1132")
+```
+
+### Rename column names
+Q1 = I felt engaged with my instructor
+Q2 = I felt engaged with my peers
+Q3 = I felt encouraged to participate
+Q4 = It was easy to interact with other students/groups
+Q5 = It was easy to interact with the instructor(s)
+Q6 =  I enjoyed attending class in this room
+```{r}
+new_names <- c("Q1", "Q2", "Q3", "Q4", "Q5", "Q6")
+names(armsB061) = new_names
+names(armsB098) = new_names
+names(walc1018) = new_names
+names(walc1132) = new_names
+```
+
+## Merge the datasets into 1 dataframe
+```{r}
+new_df <- bind_rows(lst(armsB061, armsB098, walc1018, walc1132), .id = 'Room')
+new_df
+
+```
+## Plot the points
+```{r}
+ggpairs(new_df)
+```
+```{r}
+# Create jitter plot matrix
+plot = ggpairs(new_df, 
+        columns = 2:7, 
+        aes(color = Room, alpha = 0.7), 
+        lower = list(continuous = wrap("points", position = "jitter"))) + 
+  theme_minimal() + 
+  theme(legend.position = "bottom") + 
+  labs(fill = "Room")
+plot
+```
+
+```{r}
+ggsave("jitter_plot_matrix.png", plot = plot, width = 10, height = 10, dpi = 300)
+
+```
+
+## Compare the rooms
+Arms to Arms: B061 to B098
+```{r}
+armsdf = new_df[new_df$Room == "armsB061" | new_df$Room == "armsB098",]
+walcdf = new_df[new_df$Room == "walc1018" | new_df$Room == "walc1132",]
+armsdf
+walcdf
+```
+```{r}
+# Create jitter plot matrix
+plot = ggpairs(armsdf, 
+        columns = 2:7, 
+        aes(color = Room, alpha = 0.7), 
+        lower = list(continuous = wrap("points", position = "jitter"))) + 
+  theme_minimal() + 
+  theme(legend.position = "bottom") + 
+  labs(fill = "Room")
+ggsave("jitter_plot_arms_matrix.png", plot = plot, width = 10, height = 10, dpi = 300)
+
+```
+
+```{r}
+# Create jitter plot matrix
+plot = ggpairs(walcdf, 
+        columns = 2:7, 
+        aes(color = Room, alpha = 0.7), 
+        lower = list(continuous = wrap("points", position = "jitter"))) + 
+  theme_minimal() + 
+  theme(legend.position = "bottom") + 
+  labs(fill = "Room")
+ggsave("jitter_plot_walc_matrix.png", plot = plot, width = 10, height = 10, dpi = 300)
+
+```
+
+
+
+```{r}
+walc = walcdf
+
+walc$Room <- "WALC"
+walc
+```
+```{r}
+walc = walc[,2:7]
+new_df_2 <- bind_rows(lst(armsB061, walc), .id = 'Room')
+new_df_2
+new_df_3 <- bind_rows(lst(armsB098, walc), .id = 'Room')
+
+```
+
+```{r}
+# Create jitter plot matrix
+plot = ggpairs(new_df_2, 
+        columns = 2:7, 
+        aes(color = Room, alpha = 0.7), 
+        lower = list(continuous = wrap("points", position = "jitter"))) + 
+  theme_minimal() + 
+  theme(legend.position = "bottom") + 
+  labs(fill = "Room")
+ggsave("jitter_plot_armsB061_combined_matrix.png", plot = plot, width = 10, height = 10, dpi = 300)
+
+```
+```{r}
+# Create jitter plot matrix
+plot = ggpairs(new_df_3, 
+        columns = 2:7, 
+        aes(color = Room, alpha = 0.7), 
+        lower = list(continuous = wrap("points", position = "jitter"))) + 
+  theme_minimal() + 
+  theme(legend.position = "bottom") + 
+  labs(fill = "Room")
+ggsave("jitter_plot_armsB098_combined_matrix.png", plot = plot, width = 10, height = 10, dpi = 300)
+
+```
+## Barplot approach
+
+### Armstrongdf
+```{r}
+data_long <- armsdf %>%
+  pivot_longer(cols = Q1:Q6, names_to = "Question", values_to = "Score")
+
+# Create grouped bar plot
+ggplot(data_long, aes(x = Question, y = Score, fill = Room)) +
+  geom_bar(stat = "summary", fun = mean, position = "dodge") +
+  labs(title = "Grouped Bar Plot of Question Scores of ArmsB061 vs ArmsB098 ",
+       x = "Question",
+       y = "Average Score") +
+  theme_minimal()
+```
+
+
+### Walc COmbined
+```{r}
+data_long <- walcdf %>%
+  pivot_longer(cols = Q1:Q6, names_to = "Question", values_to = "Score")
+
+# Create grouped bar plot
+ggplot(data_long, aes(x = Question, y = Score, fill = Room)) +
+  geom_bar(stat = "summary", fun = mean, position = "dodge") +
+  labs(title = "Grouped Bar Plot of Question Scores of Walc1018 vs Walc1132",
+       x = "Question",
+       y = "Average Score") +
+  theme_minimal()
+```
+### Arms B068 vs combined walc
+```{r}
+data_long <- new_df_2 %>%
+  pivot_longer(cols = Q1:Q6, names_to = "Question", values_to = "Score")
+
+# Create grouped bar plot
+ggplot(data_long, aes(x = Question, y = Score, fill = Room)) +
+  geom_bar(stat = "summary", fun = mean, position = "dodge") +
+  labs(title = "Grouped Bar Plot of Question Scores ArmsB061 vs Walc1018 + Walc 1132",
+       x = "Question",
+       y = "Average Score") +
+  theme_minimal()
+```
+
+```{r}
+data_long <- new_df_3 %>%
+  pivot_longer(cols = Q1:Q6, names_to = "Question", values_to = "Score")
+
+# Create grouped bar plot
+ggplot(data_long, aes(x = Question, y = Score, fill = Room)) +
+  geom_bar(stat = "summary", fun = mean, position = "dodge") +
+  labs(title = "Grouped Bar Plot of Question Scores ArmsB098 vs Walc1018 + Walc 1132",
+       x = "Question",
+       y = "Average Score") +
+  theme_minimal()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

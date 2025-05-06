@@ -1,0 +1,279 @@
+---
+title: "Regression Analysis For N2"
+author: "Sumeeth Guda"
+date: "2024-09-06"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+library(ggplot2)
+library(dplyr)
+library(tidyverse)
+```
+## Read in the data sets
+```{r}
+MeigsDF = read.csv("Meigs_Soil Data_21_22_23.csv", header = TRUE)
+PPACDF = read.csv("PPAC_Soil Data_21_22_23.csv", header = TRUE)
+SWPACDF = read.csv("SWPAC_Soil Data_21_22_23.csv", header = TRUE)
+
+MeigsDF$REP = as.factor(MeigsDF$REP)
+SWPACDF$REP = as.factor(SWPACDF$REP)
+
+MeigsDF$Trt = as.factor(MeigsDF$ï..TRT)
+PPACDF$Trt = as.factor(PPACDF$ï..TRT)
+SWPACDF$Trt = as.factor(SWPACDF$ï..TRT)
+
+
+head(MeigsDF)
+head(PPACDF)
+head(SWPACDF)
+```
+
+### Split the data up by the seasons
+```{r}
+Meigs_1 = MeigsDF[MeigsDF$YR==1,]
+Meigs_2 = MeigsDF[MeigsDF$YR==2,]
+Meigs_3 = MeigsDF[MeigsDF$YR==3,]
+
+Meigs_1_1 = Meigs_1[Meigs_1$ST==1,]
+Meigs_1_2 = Meigs_1[Meigs_1$ST==2,]
+
+Meigs_2_1 = Meigs_2[Meigs_2$ST==1,]
+Meigs_2_2 = Meigs_2[Meigs_2$ST==2,]
+
+Meigs_3_1 = Meigs_3[Meigs_3$ST==1,]
+Meigs_3_2 = Meigs_3[Meigs_3$ST==2,]
+
+```
+
+
+
+```{r}
+ggplot(data = Meigs_1_1, aes(x=ï..TRT, y = Total.Available.Nitrogen..TAN., col = REP)) + geom_point() + labs(y="Total Available Nitrogen (TAN)", x = "Treatment") + ggtitle("Plot of Meigs Soil in year 1, season 1")
+
+ggplot(data = Meigs_1_2, aes(x=ï..TRT, y = Total.Available.Nitrogen..TAN., col = REP)) + geom_point() + labs(y="Total Available Nitrogen (TAN)", x = "Treatment") + ggtitle("Plot of Meigs Soil in year 1, season 2")
+
+ggplot(data = Meigs_2_1, aes(x=ï..TRT, y = Total.Available.Nitrogen..TAN., col = REP)) + geom_point() + labs(y="Total Available Nitrogen (TAN)", x = "Treatment") + ggtitle("Plot of Meigs Soil in year 2, season 1")
+
+ggplot(data = Meigs_2_2, aes(x=ï..TRT, y = Total.Available.Nitrogen..TAN., col = REP)) + geom_point() + labs(y="Total Available Nitrogen (TAN)", x = "Treatment") + ggtitle("Plot of Meigs Soil in year 2, season 2")
+
+ggplot(data = Meigs_3_1, aes(x=ï..TRT, y = Total.Available.Nitrogen..TAN., col = REP)) + geom_point() + labs(y="Total Available Nitrogen (TAN)", x = "Treatment") + ggtitle("Plot of Meigs Soil in year 3, season 1")
+
+ggplot(data = Meigs_3_2, aes(x=ï..TRT, y = Total.Available.Nitrogen..TAN., col = REP)) + geom_point() + labs(y="Total Available Nitrogen (TAN)", x = "Treatment") + ggtitle("Plot of Meigs Soil in year 3, season 2")
+```
+
+### Analysis of PPAC
+```{r}
+Meigs_1 = PPACDF[PPACDF$YR==1,]
+Meigs_2 = PPACDF[PPACDF$YR==2,]
+Meigs_3 = PPACDF[PPACDF$YR==3,]
+
+Meigs_1
+
+PPAC_1_1 = Meigs_1[Meigs_1$ST==1,]
+PPAC_1_2 = Meigs_1[Meigs_1$ST==2,]
+
+PPAC_2_1 = Meigs_2[Meigs_2$ST==1,]
+PPAC_2_2 = Meigs_2[Meigs_2$ST==2,]
+
+PPAC_3_1 = Meigs_3[Meigs_3$ST==1,]
+PPAC_3_2 = Meigs_3[Meigs_3$ST==2,]
+```
+
+```{r}
+ggplot(data = PPAC_1_1, aes(x=ï..TRT, y = Total.Available.Nitrogen..TAN., col = Rep)) + geom_point() + labs(y="Total Available Nitrogen (TAN)", x = "Treatment") + ggtitle("Plot of PPAC Soil in year 1, season 1")
+
+ggplot(data = PPAC_1_2, aes(x=ï..TRT, y = Total.Available.Nitrogen..TAN., col = Rep)) + geom_point() + labs(y="Total Available Nitrogen (TAN)", x = "Treatment") + ggtitle("Plot of PPAC Soil in year 1, season 2")
+
+ggplot(data = PPAC_2_1, aes(x=ï..TRT, y = Total.Available.Nitrogen..TAN., col = Rep)) + geom_point() + labs(y="Total Available Nitrogen (TAN)", x = "Treatment") + ggtitle("Plot of PPAC Soil in year 2, season 1")
+
+ggplot(data = PPAC_2_2, aes(x=ï..TRT, y = Total.Available.Nitrogen..TAN., col = Rep)) + geom_point() + labs(y="Total Available Nitrogen (TAN)", x = "Treatment") + ggtitle("Plot of PPAC Soil in year 2, season 2")
+
+ggplot(data = PPAC_3_1, aes(x=ï..TRT, y = Total.Available.Nitrogen..TAN., col = Rep)) + geom_point() + labs(y="Total Available Nitrogen (TAN)", x = "Treatment") + ggtitle("Plot of PPAC Soil in year 3, season 1")
+
+ggplot(data = PPAC_3_2, aes(x=ï..TRT, y = Total.Available.Nitrogen..TAN., col = Rep)) + geom_point() + labs(y="Total Available Nitrogen (TAN)", x = "Treatment") + ggtitle("Plot of PPAC Soil in year 3, season 2")
+```
+
+### Analysis of SWPAC
+```{r}
+Meigs_1 = SWPACDF[SWPACDF$YR==1,]
+Meigs_2 = SWPACDF[SWPACDF$YR==2,]
+Meigs_3 = SWPACDF[SWPACDF$YR==3,]
+
+SWPAC_1_1 = Meigs_1[Meigs_1$ST==1,]
+SWPAC_1_2 = Meigs_1[Meigs_1$ST==2,]
+
+SWPAC_2_1 = Meigs_2[Meigs_2$ST==1,]
+SWPAC_2_2 = Meigs_2[Meigs_2$ST==2,]
+
+SWPAC_3_1 = Meigs_3[Meigs_3$ST==1,]
+SWPAC_3_2 = Meigs_3[Meigs_3$ST==2,]
+```
+
+```{r}
+ggplot(data = SWPAC_1_1, aes(x=ï..TRT, y = Total.Available.Nitrogen..TAN., col = REP)) + geom_point() + labs(y="Total Available Nitrogen (TAN)", x = "Treatment") + ggtitle("Plot of SWPAC Soil in year 1, season 1")
+
+ggplot(data = SWPAC_1_2, aes(x=ï..TRT, y = Total.Available.Nitrogen..TAN., col = REP)) + geom_point() + labs(y="Total Available Nitrogen (TAN)", x = "Treatment") + ggtitle("Plot of SWPAC Soil in year 1, season 2")
+
+ggplot(data = SWPAC_2_1, aes(x=ï..TRT, y = Total.Available.Nitrogen..TAN., col = REP)) + geom_point() + labs(y="Total Available Nitrogen (TAN)", x = "Treatment") + ggtitle("Plot of SWPAC Soil in year 2, season 1")
+
+ggplot(data = SWPAC_2_2, aes(x=ï..TRT, y = Total.Available.Nitrogen..TAN., col = REP)) + geom_point() + labs(y="Total Available Nitrogen (TAN)", x = "Treatment") + ggtitle("Plot of SWPAC Soil in year 2, season 2")
+
+ggplot(data = SWPAC_3_1, aes(x=ï..TRT, y = Total.Available.Nitrogen..TAN., col = REP)) + geom_point() + labs(y="Total Available Nitrogen (TAN)", x = "Treatment") + ggtitle("Plot of SWPAC Soil in year 3, season 1")
+
+ggplot(data = SWPAC_3_2, aes(x=ï..TRT, y = Total.Available.Nitrogen..TAN., col = REP)) + geom_point() + labs(y="Total Available Nitrogen (TAN)", x = "Treatment") + ggtitle("Plot of SWPAC Soil in year 3, season 2")
+```
+
+# Yield data model: 
+
+
+
+# QWant to show increase or decrease in the TAN over time. Want to see if there exists a trend. 
+
+# Can average out the treatments, plot the season plots together. 
+Spring plot, fall plot. 
+
+Create a plot with the averaged rep counts of the 13 treatments. Combine them into 1 plot with the respective regression lines (13 colors). X value: Year / season, Y value: Total Available Nitrogen. 
+
+
+# MEIGS DATA
+```{r, meigs plot spring}
+# Run above cells first before running this one
+Meigs_1_1 = Meigs_1_1[,c(2,47,5)]
+Meigs_1_2 = Meigs_1_2[,c(2,47,5)]
+Meigs_2_1 = Meigs_2_1[,c(2,47,5)]
+Meigs_2_2 = Meigs_2_2[,c(2,47,5)]
+Meigs_3_1 = Meigs_3_1[,c(2,47,5)]
+Meigs_3_2 = Meigs_3_2[,c(2,47,5)]
+
+```
+
+```{r}
+Meigs_1_1
+```
+```{r}
+
+Meigs_1_1_n = Meigs_1_1%>% group_by(YR, Trt) %>% summarize(Mean_TAN = mean(Total.Available.Nitrogen..TAN.))
+Meigs_1_2_n = Meigs_1_2%>% group_by(YR, Trt) %>% summarize(Mean_TAN = mean(Total.Available.Nitrogen..TAN.))
+Meigs_2_1_n = Meigs_2_1%>% group_by(YR, Trt) %>% summarize(Mean_TAN = mean(Total.Available.Nitrogen..TAN.))
+Meigs_2_2_n = Meigs_2_2%>% group_by(YR, Trt) %>% summarize(Mean_TAN = mean(Total.Available.Nitrogen..TAN.))
+Meigs_3_1_n = Meigs_3_1%>% group_by(YR, Trt) %>% summarize(Mean_TAN = mean(Total.Available.Nitrogen..TAN.))
+Meigs_3_2_n = Meigs_3_2%>% group_by(YR, Trt) %>% summarize(Mean_TAN = mean(Total.Available.Nitrogen..TAN.))
+
+Meigs_1_1_n
+
+
+```
+
+## Combining the 3 year data sets into 2 seperate data sets
+```{r}
+Meigs_spring = rbind(Meigs_1_1_n, Meigs_2_1_n, Meigs_3_1_n)
+Meigs_fall = rbind(Meigs_1_2_n, Meigs_2_2_n, Meigs_3_2_n)
+
+Meigs_spring
+Meigs_fall
+```
+```{r}
+anova(lm(Mean_TAN~YR+Trt, Meigs_fall))
+summary(lm(Mean_TAN~YR+Trt, Meigs_fall))
+```
+
+## Plotting the spring and fall data sets
+```{r}
+spring_plot = Meigs_spring %>% ggplot(aes(x=YR, y=Mean_TAN, colour = Trt)) + geom_point() + geom_line(aes(x = YR, group = Trt)) + ggtitle("Meigs Plot of Year against spring mean TAN")
+spring_plot
+fall_plot = Meigs_fall %>% ggplot(aes(x=YR, y=Mean_TAN, colour = Trt)) + geom_point() + geom_line(aes(x = YR, group = Trt)) + ggtitle("Meigs Plot of Year against fall mean TAN")
+fall_plot
+```
+
+# PPAC DATA
+
+```{r, ppac plot}
+# Run above cells first before running this one
+PPAC_1_1 = PPAC_1_1[,c(2,47,5)]
+PPAC_1_2 = PPAC_1_2[,c(2,47,5)]
+PPAC_2_1 = PPAC_2_1[,c(2,47,5)]
+PPAC_2_2 = PPAC_2_2[,c(2,47,5)]
+PPAC_3_1 = PPAC_3_1[,c(2,47,5)]
+PPAC_3_2 = PPAC_3_2[,c(2,47,5)]
+
+```
+
+## Creating one big data frame for the ppac data
+```{r}
+Meigs_1_1_n = PPAC_1_1 %>% group_by(YR, Trt) %>% summarize(Mean_TAN = mean(Total.Available.Nitrogen..TAN.))
+Meigs_1_2_n = PPAC_1_2 %>% group_by(YR, Trt) %>% summarize(Mean_TAN = mean(Total.Available.Nitrogen..TAN.))
+Meigs_2_1_n = PPAC_2_1 %>% group_by(YR, Trt) %>% summarize(Mean_TAN = mean(Total.Available.Nitrogen..TAN.))
+Meigs_2_2_n = PPAC_2_2 %>% group_by(YR, Trt) %>% summarize(Mean_TAN = mean(Total.Available.Nitrogen..TAN.))
+Meigs_3_1_n = PPAC_3_1 %>% group_by(YR, Trt) %>% summarize(Mean_TAN = mean(Total.Available.Nitrogen..TAN.))
+Meigs_3_2_n = PPAC_3_2 %>% group_by(YR, Trt) %>% summarize(Mean_TAN = mean(Total.Available.Nitrogen..TAN.))
+
+PPAC_spring = rbind(Meigs_1_1_n, Meigs_2_1_n, Meigs_3_1_n)
+PPAC_fall = rbind(Meigs_1_2_n, Meigs_2_2_n, Meigs_3_2_n)
+
+PPAC_spring
+PPAC_fall
+```
+
+## PLots for PPAC
+```{r}
+spring_plot = PPAC_spring %>% ggplot(aes(x=YR, y=Mean_TAN, colour = Trt)) + geom_point() + geom_line(aes(x = YR, group = Trt)) + ggtitle("PPAC Plot of Year against spring mean TAN")
+spring_plot
+fall_plot = PPAC_fall %>% ggplot(aes(x=YR, y=Mean_TAN, colour = Trt)) + geom_point() + geom_line(aes(x = YR, group = Trt)) + ggtitle("PPAC Plot of Year against fall mean TAN")
+fall_plot
+```
+
+# SWPAC Data
+```{r, SWpac plot}
+# Run above cells first before running this one
+SWPAC_1_1 = SWPAC_1_1[,c(2,47,5)]
+SWPAC_1_2 = SWPAC_1_2[,c(2,47,5)]
+SWPAC_2_1 = SWPAC_2_1[,c(2,47,5)]
+SWPAC_2_2 = SWPAC_2_2[,c(2,47,5)]
+SWPAC_3_1 = SWPAC_3_1[,c(2,47,5)]
+SWPAC_3_2 = SWPAC_3_2[,c(2,47,5)]
+
+```
+
+## Creating one big data frame for the swpac data
+```{r}
+Meigs_1_1_n = SWPAC_1_1 %>% group_by(YR, Trt) %>% summarize(Mean_TAN = mean(Total.Available.Nitrogen..TAN.))
+Meigs_1_2_n = SWPAC_1_2 %>% group_by(YR, Trt) %>% summarize(Mean_TAN = mean(Total.Available.Nitrogen..TAN.))
+Meigs_2_1_n = SWPAC_2_1 %>% group_by(YR, Trt) %>% summarize(Mean_TAN = mean(Total.Available.Nitrogen..TAN.))
+Meigs_2_2_n = SWPAC_2_2 %>% group_by(YR, Trt) %>% summarize(Mean_TAN = mean(Total.Available.Nitrogen..TAN.))
+Meigs_3_1_n = SWPAC_3_1 %>% group_by(YR, Trt) %>% summarize(Mean_TAN = mean(Total.Available.Nitrogen..TAN.))
+Meigs_3_2_n = SWPAC_3_2 %>% group_by(YR, Trt) %>% summarize(Mean_TAN = mean(Total.Available.Nitrogen..TAN.))
+
+SWPAC_spring = rbind(Meigs_1_1_n, Meigs_2_1_n, Meigs_3_1_n)
+SWPAC_fall = rbind(Meigs_1_2_n, Meigs_2_2_n, Meigs_3_2_n)
+
+SWPAC_spring
+SWPAC_fall
+```
+```{r}
+anova(lm(Mean_Tan~., ))
+```
+
+
+
+## PLot of SWPAC data
+
+```{r}
+spring_plot = SWPAC_spring %>% ggplot(aes(x=YR, y=Mean_TAN, colour = Trt)) + geom_point() + geom_line(aes(x = YR, group = Trt)) + ggtitle("SWPAC Plot of Year against spring mean TAN")
+spring_plot
+fall_plot = SWPAC_fall %>% ggplot(aes(x=YR, y=Mean_TAN, colour = Trt)) + geom_point() + geom_line(aes(x = YR, group = Trt)) + ggtitle("SWPAC Plot of Year against fall mean TAN")
+fall_plot
+```
+
+
+
+
+
+
+
+
+
+

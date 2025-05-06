@@ -1,0 +1,97 @@
+Client 24-090 IM Meeting
+9/25/24 
+attendees: Sumeeth Guda, Chong Gu, Yifei Zhao, Pricilla Qinlang Ding
+
+Research question: 
+- Wants tocreate an interactive website based intervention program forucisng on the diertay aspects on cardio health to guide adults from 18-39 to better habits
+- Wants to assess the effectiveness of this intervention program
+
+Client is not finished developing her website. She is using the 9 item mini-EAT survey from Mayo
+
+Yifei will get all of her participants for the survey principally from PUSH/ PMU / or other Purdue students / As well as Lafayette hospitals to collect her data
+
+Wants to see the effects of the clustering measures
+
+She won't be drawing blood for her partcipants
+
+She will make the participants take the test once, do the program, adn take the test again
+
+She considering adding qualitative measures to get more factors from the study rather than get the singular score from the mini-EAT
+
+Gu had a logistic question. Does she have a deadline to take the survey? Does she have the right amount of flexibility for the pre-survey
+
+Once she launches the website, how much time does she have for the website program, and how does she keep the participants on track for the program and to fill out the surveys. 
+
+The prigram is not synchronized with the delivery
+
+If survey data is collected, it will be easier to anaalyze
+
+A concern Dr. Gu had issues with the survey integrity. Some of the participants won't answer the pre or post survey honestly. Its really hard to change peoples habits in a 2-3 week period
+
+The analysis isn't a concern, however logistically this design would be challenging. 
+
+Educational program: 
+- WIll talk about risk factors for the diet. TO inform the participants on the choices they make and the long term risks on cardio vascular health on the client's diet
+Disclaimer: Educational factor won't change the habits too much, but she is interested in showing that given awareness of the risks does this change the client's eating habits. 
+
+Gu: HAs issues with the practical meaning of the data and the memory span of the participants. 
+
+Yifei: Wants to create an interactive space to show how peer participation can help improve the diets. 
+
+Gu: One thing he can think about is that before yifei launches the website. Make the participants fill out the survey to get the pre data. 
+
+Make them fill out the pre before they see the website. 
+
+Yifei won't launch the website publically, she will only send it to the willing participants
+
+SHe has a tight time span to recruit the participants in the Spring semester. She will also send text reminders. S
+
+Gu: Send reminders based on when they filled the pre survey. You need to make sure the space between the pre and post survey isn't too long. 
+
+The key is to determine how much time the particiapnts are allowed to have to fill out the post survey. (3-4 weeks is the ideal case to fill out the post survey after education). 
+
+They will collect data in may or april
+
+Gu :Do they collect demographics data? Yifei - Yes they will
+
+Sumeeth: Will she give assessments through the program to ensure the participants retain the information from the educational program? 
+
+Yifei: Currently no, but it is a good idea to implement into the program to gauge the information retention for the program. [Gu agreed to the suggestion]
+
+Yifei is considering adding incentives for the program for the top commenters. But she cannot discern the quality of the commenters. To retain the amount of participants from the start towards the end. 
+
+FOr course survey, based on the time the participants finish. Send an email telling participants by n-days they need to fill out the mini-quiz and post survey. 
+
+Collect the most important data before the program begins. 
+
+Gu: Each item is ordinal. She might run before and after comparison which might / might not depend on demographics. 
+
+Sumeeth: She would want to get as many people as possible for the survey, she should put 300 or so on the irb application. 
+
+Gu: She needs to know effect size, noise magnitude (fine with signle physical measures). We don;t know variability of the survey. For effect size look at prior studies and be aware the behaviour of one cohort will behave different than another cohort
+
+We will work with whatever the size of participants are, however more participants is better. 
+
+She just needs to put an arbitary number in the study and recruit as much as possible. 
+
+Ding: Give yifei a bottom line in terms of numbers. 
+
+Gu: With surveys you'd want the samples to be representative, and if she gets only purdue student data then she'd need to restrict the study scope to purdue studnets. Wrt sample size, larger size is better and we aren't looking at multivariate covariates. If signal is strong in small sample size the trends will be significant. 
+
+Gu: If she is using the Mayo questions, she needs to get permission from the Mayo to use their items on her own website. IF it isn't possible to use the Mayo questions we need to explore other options. She needs to get permission or she could get sued for copy right violations. 
+
+If the Mayo agrees, she needs to clarify which ones are propietary from the Mayo. Needs to show which questions are her own and which ones are from the Mayo. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+

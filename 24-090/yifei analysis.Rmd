@@ -1,0 +1,241 @@
+---
+title: "Yifei analysis"
+author: "Sumeeth Guda"
+date: "2025-04-17"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Read the data
+```{r}
+preDF = read.csv("yifei pre-survey.csv")
+preDF$education <- replace(preDF$education, preDF$education %in% c("Grad school or higher", "Grad school or higher "), "Grad School")
+
+
+prepostDF = read.csv("Yifei Pre-post survey.csv")
+head(preDF)
+head(prepostDF)
+```
+
+
+
+## Hypothesis 1
+H0: There is no significant difference in cardiac knowledge scores before and after the
+intervention (review the website on their own).
+
+H1: Cardiac knowledge scores will significantly increase after the intervention.
+Healthy Eating Behavior
+
+```{r}
+precv = prepostDF$pre.CV.quiz.score
+postcv = prepostDF$Post.CV.quiz.score
+hist(precv)
+hist(postcv)
+t.test(precv, postcv)
+
+```
+
+Conclusion, since the p-value is 0.09558, because this quantity is greater than significance threshold alpha = 0.05, we don't have enough evidence to reject H0. And can conclude that there is no significant difference in cardiac knowledge scores before and after the intervention. 
+
+
+## Hypothesis 2
+Healthy Eating Behavior
+H0: There is no significant difference in healthy eating behavior scores before and after the
+intervention.
+H1: Healthy eating behavior scores will significantly improve after the intervention.
+
+
+```{r}
+preEat = prepostDF$pre.Mini.EAT
+postEat = prepostDF$Post.Mini.EAT
+hist(preEat)
+hist(postEat)
+t.test(preEat, postEat)
+```
+
+Conclusion, since the p-value is 0.9068, because this quantity is greater than significance threshold alpha = 0.05, we don't have enough evidence to reject H0. And can conclude that there is no significant difference in Mini Eat scores before and after the intervention.
+
+
+## Hypothesis 3
+H0: There is no significant difference in pre/post change in healthy eating behavior by sex at
+birth.
+H1: There is a significant difference in behavior change based on sex at birth.
+
+
+If we are comparing the sex's against each other: 
+```{r}
+change = postEat - preEat
+t.test(change~prepostDF$sex, data = prepostDF)
+```
+Since the p-value is 0.04508, which is less than 0.05 we reject the null hypothesis and conclude that the sex's have different eating behaviors. 
+
+If we want to look at them seperately we get: 
+```{r}
+male = prepostDF[prepostDF$sex == 'M',]
+female = prepostDF[prepostDF$sex == 'F',]
+print("------ Male results ------")
+t.test(male$pre.Mini.EAT, male$Post.Mini.EAT)
+print("------ Female results ------")
+t.test(female$pre.Mini.EAT, male$Post.Mini.EAT)
+
+
+
+```
+
+As shown above each group individually do not have significantly different results because their p.values aren't less than 0.05. 
+
+
+
+## Hypothesis 4
+Effect of Education Level on Cardiac Knowledge
+H0: There is no significant difference in baseline cardiac knowledge scores based on
+education level.
+H1: Baseline cardiac knowledge scores differ significantly based on education level
+
+```{r}
+library(car)
+```
+```{r}
+print("------- Anova results -------")
+anova_model <- aov(pre.Mini.EAT~ education, data = preDF)
+summary(anova_model)
+
+print("------ Check for differences between groups ------")
+TukeyHSD(anova_model)
+
+print("-------- Check for normality -----------")
+
+by(preDF$pre.Mini.EAT, preDF$education, shapiro.test)
+
+print("--------- Check for constant Variance ---------")
+
+leveneTest(pre.Mini.EAT ~ education, data = preDF)
+
+```
+
+From the above, based on all the pairwise comparisons, there is no significant difference between the education levels since none of the p-values are less than 0.05. Furthermore we have normally distributed data for each of the groups, however the variance wasn't constant. Variance isn't constant because of the p value from the levene test. 
+
+## Hypothesis 5
+H0: Change in healthy eating behavior does not vary by ethnicity.
+H1: Ethnic background influences the degree of healthy dietary change through the
+intervention
+
+```{r}
+change = postEat-preEat
+anova_model <- aov(change ~ ethnicity, data = prepostDF)
+summary(anova_model)
+
+TukeyHSD(anova_model)
+
+```
+As shown above, since the p-value is 0.286, ultimately the Hispanic and Non-Hispanic or Latino groups do not have significant differences because p > 0.05. Hence we fail to reject the null hypothesis and conclude that change in healthy eating behavior does not vary by ethnicity. 
+
+
+## Hypothesis 6
+H0: There is no significant difference in pre-intervention healthy eating behavior scores
+between different ethnic groups.
+H1: There is a significant difference in pre-intervention healthy eating behavior scores
+between two ethnic groups.
+
+```{r}
+anova_model <- aov(pre.Mini.EAT~ethnicity, data = preDF)
+summary(anova_model)
+TukeyHSD(anova_model)
+```
+As shown above, since the p-value is 0.724, ultimately the Hispanic and Non-Hispanic or Latino groups do not have significant differences because p > 0.05. Hence we fail to reject the null hypothesis and conclude that pre-intervention healthy eating scores do not differ between different ethnic groups. 
+
+
+## Hypothesis 7
+Correlation between Cardiac Knowledge and Healthy Eating Behavior
+H0: There is no correlation between cardiac knowledge scores and healthy eating behavior.
+H1: Higher cardiac knowledge scores are positively correlated with healthier eating
+behavior.
+
+Case 1: In the pre intervention baseline: 
+```{r}
+library(ggplot2)
+library(dplyr)
+```
+
+
+
+```{r}
+hist(preDF$pre.Mini.EAT)
+hist(preDF$pre.CV.quiz.score)
+```
+We can be confident that the pre mini eat and the pre-cv-quiz scores are normally distributed, they roughly follow a bell curve. 
+
+
+```{r}
+
+model = lm(preDF$pre.Mini.EAT~preDF$pre.CV.quiz.score)
+summary(model)
+anova(model)
+
+cor.test(preDF$pre.Mini.EAT, preDF$pre.CV.quiz.score, method = "pearson", side = "greater")
+
+
+plot = preDF %>% ggplot(aes(x=pre.CV.quiz.score, y= pre.Mini.EAT)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE, color = "red", linewidth = 1.2) + 
+  labs(
+    title = "Cardiac Knowledge vs. Healthy Eating in pre-intervention",
+    x = "Cardiac Knowledge",
+    y = "Healthy Eating behavior"
+  ) +
+  theme_minimal()
+plot
+```
+
+Based off the p-value, there isn't any significant correlation between the cardiac knowledge scores and healthy eating in the pre-intervention. 
+
+
+Lets see the same results but in the pre-post survey
+```{r}
+changeEat = prepostDF$Post.Mini.EAT-prepostDF$pre.Mini.EAT
+changeCv = prepostDF$Post.CV.quiz.score-prepostDF$pre.CV.quiz.score
+hist(changeEat)
+hist(changeCv)
+
+```
+```{r}
+shapiro.test(changeEat)
+shapiro.test(changeCv)
+```
+
+As shown above we definitely do not have normally distributed data with the differences in the cardiovascular health variable. We will use the spearman correlation coeffieicnt to get the correlation. 
+
+```{r}
+cor.test(changeCv, changeEat, method = "spearman", alternative = "greater")
+```
+As shown above, we don't have significant correlation between the pre and post differences for the EAT and CV variables as shown by the p-value. 
+
+```{r}
+model = lm(changeEat~changeCv)
+summary(model)
+anova(model)
+```
+
+The anova and model summary's support the original claim that there don't exist significant linear association between the cardiovascular health and eating habit scores. 
+
+
+```{r}
+changedf = data.frame(changeEat, changeCv)
+
+plot = changedf %>% ggplot(aes(x=changeCv,y=changeEat)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE, color = "red") + 
+  labs(
+    title = "Cardiac Knowledge vs. Healthy Eating in prepost-intervention",
+    y = "Healthy Eating Behavior",
+    x = "Cardiac Knowledge"
+  ) +
+  theme_minimal()
+plot
+```
+
+
+

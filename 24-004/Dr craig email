@@ -1,0 +1,10 @@
+Are you requesting there be a follow-up meeting?  Confirmation of your approaches?  Or requesting a meeting to discuss approaches?  Regardless, Akhere is severely handcuffed with only 37 cases as he can only consider models involving subsets of predictors.  If the responses are either ordinal or binary, that can get even more difficult (separation of points). 
+
+ 
+
+Incorporating a penalty (like Firth’s) is one way around separation of points.
+Regression models are used for prediction and for answering questions regarding associations.  Not all association questions require all the predictors in the model.  He must have some that would be considered primary predictors and others that are considered covariates.  Can breaking things up this way help in terms of answering his questions?  He can look at associations with and without covariates?
+Dimension reduction is sometimes used.  Apply PCA and LASSO to covariates and use the first couple of dimensions as the predictors. 
+ 
+
+Let me know how I can assist more.

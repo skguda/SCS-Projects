@@ -1,0 +1,207 @@
+---
+title: "Josh Martin Analysis"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readxl)
+library(dplyr)
+library(faraway)
+```
+
+## Data Preprocessing
+
+```{r, include=FALSE}
+# load data 
+data <- read_excel("N:\\SCS\\SCS Client Files\\Active Summer 2024\\24-001 Martin\\EggWhiteData.xlsx")
+#"/Users/youhashin/Library/CloudStorage/OneDrive-purdue.edu/Documents/SCS/24-001 [Joshua Martin]/EggWhiteData.xlsx")
+
+head(data)
+
+str(data)
+
+# set `Antimicrobial` as factor 
+data$Antimicrobial <- as.factor(data$Antimicrobial)
+
+# set `Day` as factor 
+data$Day <- as.factor(data$Day)
+
+# rename T. Replicate 
+data$t_rep <- data$"T. Replicate"
+
+# rename B. Replicate
+data$b_rep <- as.factor(data$"B. Replicate")
+
+# rename CFU/g to y 
+data$y <- data$"CFU/g (LOD=10)"
+
+# set t_rep as factor 
+data$t_rep <- as.factor(data$t_rep)
+
+# set b_rep as factor
+data$b_rep <- as.factor(data$b_rep)
+```
+
+In the data provided, we have six columns:  
+
+1. `Day`: The day of the experiment (categorized from Day 1-6). Please note that this does not correspond exactly to the specific time points of the experiment, but rather serves as a categorical variable to represent different experimental conditions or treatments.  
+2. `Antimicrobial`: The type of antimicrobial treatment used in the experiment (with levels T1, T2, T3).  
+3. `T. Replicate`: The technical replicate number. Up to 3 replicates for each biological replicate.  
+4. `B. Replicate`: The biological replicate number. There are 3 biological replicates for each combination of Day and Antimicrobial (with levels A, B, C).  
+5. `CFU/g (LOD=10)`: The colony-forming units per gram of egg white. This serves as our response variable.    
+
+```{r}
+# Display the first few rows of the data
+head(data)
+
+# Display the structure of the data
+str(data)
+
+
+```
+
+
+```{r, include=FALSE}
+
+# Assuming your data is in a dataframe named 'eggwhite_data'
+# Group by the relevant factors (excluding technical replicates)
+# and calculate the mean CFU/g for each group
+grouped_data <- data %>%
+  group_by(Day, Antimicrobial, b_rep) %>%
+  summarise(Avg_y = mean(y, na.rm = TRUE))
+
+# Display the first few rows of the averaged data
+head(grouped_data)
+
+grouped_data
+
+# create new col that takes log base 10 of Avg_y
+grouped_data$log_y <- log10(grouped_data$Avg_y)
+
+```
+
+In the data preprocessing phase, we made sure to treat each biological replicate as a separate observation to retain variability among them. 
+
+This allows for assessing *differences in bacterial growth over time and across different levels of the antimicrobial agent.* 
+
+It was acceptable to average over the `CFU/g` values over the technical replicates for each combination of `Day`, `Antimicrobial`, and Biological replicate, which is seen in the data below. 
+
+```{r}
+# Display the first few rows of the averaged data
+grouped_data
+
+
+# Display the structure of the averaged data
+str(grouped_data)
+
+# export grouped_data to excel 
+# write.csv(grouped_data, "EggWhiteData_Avg.csv")
+
+```
+
+
+We then conduct a quick normal distribution check for the `log_y` variable. 
+
+What we observe is large amounts of data near the lower and upper ends of the scale, which is generally not observed for the Normal distribution. 
+
+However, what we are more concerned with is the distribution of the residuals from the model, which we will check after performing our statistical analysis. 
+
+```{r}
+# plot histogram and kernel for log_y
+hist(grouped_data$log_y)
+
+plot(density(grouped_data$log_y))
+
+```
+
+## Statistical Analysis
+
+The analysis performed uses a linear model with a log-transformed response variable as a function of the factors `Day`, `Antimicrobial`, and their interaction `Day: Antimicrobial`.
+
+This model is used to assess the effects of time (`Day`), type of antimicrobial, and the interaction between the two factors on the bacterial growth. 
+
+```{r}
+library(stats)
+
+model <- lm(log_y ~ Day * Antimicrobial, data = grouped_data)
+
+
+# Conduct an ANOVA to assess the significance of the factors and their interaction
+anova_result <- anova(model)
+
+# Print the ANOVA results
+print(anova_result)
+```
+
+
+### ANOVA Results and Interpretation 
+
+1. **`Day`**: The `Day` factor is highly significant ($p < 8.536\times 10^{-6}$), indicating that the time point at which the measurement is taken significantly affects the bacterial growth. That is, the change in bacterial growth over days is not constant.   
+2. **`Antimicrobial`**: The `Antimicrobial` factor is also highly significant ($p < 2.2\times 10^{-16}$), suggesting that the type of antimicrobial used has a substantial impact on controlling bacterial growth. That is, different levels of antimicrobial lead to significantly different levels of bacterial growth.  
+3. **`Day:Antimicrobial` Interaction**: The interaction between `Day` and `Antimicrobial` is marginally non-significant with a p-value just above the generally accepted 0.05 threshold ($p = 0.0647$). This suggests that while there might be some differences in how antimicrobial effectiveness changes over time, these differences are not statistically significant at the 95% significance level. However, the p-value is close enough to the threshold to warrant further investigation with a post-hoc comparisons test to identify where the differences are coming from. 
+
+```{r}
+sumary(model)
+```
+
+### Linear Model Interpretation: 
+
+The linear model is the same as the one used in the ANOVA, but here we can get a more detailed level of view regarding the coefficients and their significance levels.
+
+* The Intercept (4.326) represents the log-transformed bacterial growth for the baseline category (Day 1, Antimicrobial T1).  
+* The coefficients for `Day` and `Antimicrobial` represent the difference in log-transformed bacterial growth from the baseline when only one factor is changed.   
+    * For example, `AntimicrobialT2` (-1.664) suggests that all else equal, the log-transformed bacterial growth decreases by about 1.664 when switching from Antimicrobial T1 to T2 on Day 1.   
+* Interaction terms like `Day2:AntimicrobialT2` show the additional effect on log-transformed bacterial growth when both factors are considered together, beyond their individual effects.  
+
+***
+
+### Post-Hoc Analysis: Tukey's HSD Test
+
+We now perform a post-hoc analysis using Tukey's Honest Significant Differences (HSD) test to identify which specific groups are significantly different from each other.  
+
+That is, we seek to evaluate the differences for the outcome variable among treatments for each sampling day, as well as the comparison with Day 0. This will help us understand the specific effects/changes of antimicrobial treatments on bacterial growth over different time points. 
+
+```{r}
+# Perform Tukey's HSD test
+tukey_result <- TukeyHSD(aov(model))
+
+# Print the results
+print(tukey_result)
+
+
+```
+
+
+### Post-Hoc Analysis Interpretation
+
+#### Comparing `Day`: 
+
+* The results for `Day` show the pairwise comparisons between the different days. Each row represents a comparison, with `diff` showing the difference in mean log-transformed bacterial growth between the two days, `lwr` and `upr` indicating the lower and upper bounds of the 95% confidence interval for this difference, and `p adj` showing the adjusted p-value for the comparison.  
+* Significant differences (p < 0.05) are observed between several pairs of days, indicating that the bacterial growth (measured on the log scale) significantly varies across different days:  
+    * Day 2 vs. Day 1: Mean difference is -0.627, with a significant p-value of 0.00075, indicating that *Day 2 has significantly lower bacterial growth compared to Day 1*. 
+
+
+```{r}
+# Plotting the results
+plot(tukey_result)
+```
+
+```{r}
+
+# create QQ plot of residuals
+qqnorm(model$residuals)
+
+# add a reference line
+qqline(model$residuals)
+
+# create a histogram of residuals 
+hist(model$residuals)
+
+# create a kernel density plot of residuals
+plot(density(model$residuals))
+
+# create a scatter plot of residuals vs. fitted values
+plot(model$fitted.values, model$residuals)
+
+```

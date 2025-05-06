@@ -1,0 +1,202 @@
+---
+title: "EggWhite_Analysis_Slurry2"
+author: "Sumeeth Guda"
+date: "2024-07-02"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Libraries 
+
+Read in the R packages. 
+
+```{r}
+library(readxl)
+library(dplyr)
+library(faraway)
+library(ggplot2)
+```
+
+# Analysis using Previous Consultant's approach
+
+```{r}
+slurryDF = read_excel("N:\\SCS\\SCS Client Files\\Active Summer 2024\\24-001 Martin\\Slurry2GraphsData.xlsx")
+
+# set `Antimicrobial` as factor 
+slurryDF$Antimicrobial <- as.factor(slurryDF$Antimicrobial)
+
+# set `Day` as factor 
+slurryDF$Day <- as.factor(slurryDF$Day)
+
+# Creates a log cfu factor
+
+slurryDF$logCFU <- log(slurryDF$`CFU/mL...8`)
+
+head(slurryDF)
+str(slurryDF)
+
+
+
+
+```
+
+```{r}
+slurryDF[,c(1,2,6,7,8,9)]
+```
+
+```{r}
+
+# plot histogram and kernel for log_y
+hist(slurryDF$logCFU)
+
+plot(density(slurryDF$logCFU))
+
+
+```
+```{r}
+tempDF = slurryDF[complete.cases(slurryDF),]
+```
+
+```{r}
+library(stats)
+
+model <- lm(logCFU ~ Day * Antimicrobial, data = tempDF)
+
+
+# Conduct an ANOVA to assess the significance of the factors and their interaction
+anova_result <- anova(model)
+
+# Print the ANOVA results
+print(anova_result)
+
+summary(model)
+```
+```{r}
+# Perform Tukey's HSD test
+tukey_result <- TukeyHSD(aov(model))
+
+# Print the results
+print(tukey_result)
+```
+
+
+```{r}
+
+# create QQ plot of residuals
+qqnorm(model$residuals)
+
+# add a reference line
+qqline(model$residuals)
+
+# create a histogram of residuals 
+hist(model$residuals)
+
+# create a kernel density plot of residuals
+plot(density(model$residuals))
+
+# create a scatter plot of residuals vs. fitted values
+plot(model$fitted.values, model$residuals)
+
+```
+
+### Take away: 
+Dataset doesn't have enough observations, you cannot use the statistical approaches to formally test to see if there exist differences between the antimicrobials. Needless to say you can use graphical approach to see the differences. 
+
+
+
+
+
+
+
+
+# Making the main visualization
+
+
+Read in the main data frame: 
+```{r}
+slurryDF = read_excel("N:\\SCS\\SCS Client Files\\Active Summer 2024\\24-001 Martin\\Slurry2GraphsData.xlsx")
+
+# set `Antimicrobial` as factor 
+slurryDF$Antimicrobial <- as.factor(slurryDF$Antimicrobial)
+
+# set `Day` as factor 
+slurryDF$Day <- as.factor(slurryDF$Day)
+
+# Creates a log cfu factor
+
+slurryDF$logCFU <- log(slurryDF$`CFU/mL...8`)
+
+head(slurryDF)
+str(slurryDF)
+
+
+```
+
+
+
+For graphing it is important to not have any NaN values or empty cells, so we use complete.cases to get the values for the rows that are complete. 
+
+```{r}
+slurryDF = slurryDF[complete.cases(slurryDF),]
+slurryDF
+```
+
+Since we also want to take the averages of each of the groups (Antimicrobials) we will mutate the data frame to get the group averages of the logCFU variable and save the results into a new dataframe. 
+
+
+```{r}
+Avgs <- slurryDF %>% 
+   group_by(Antimicrobial) %>% 
+   mutate(group_avg = mean(logCFU))
+
+slurryDF_new = Avgs
+slurryDF_new
+```
+
+
+
+```{r}
+ggplot(slurryDF_new, aes(x=Antimicrobial, y = logCFU, col = Day)) + 
+    geom_point() + #Plots the averaged values for the days
+    geom_point(aes(x=Antimicrobial, y = group_avg, col= "Antimicrobial Group Average")) + # Plots the averaged values for the Antimicrobials
+    ggtitle("Antimicrobial Treatment vs log(CFU/mL)")
+```
+The pink / fucsia /magenta point is the average for each of the treatments (T1,...,T6) across all of the days. As we can see the above there are differences between the antimicrobial treatments through visual observation. To actually prove this, you ordinarily would need to use anova or a tukey HSD test, however this data set does not have enough observations to give meaningful results with this test. 
+
+
+```{r}
+oneway.test(group_avg~Day*Antimicrobial, data = slurryDF_new)
+```
+
+## Takeaway from the analysis
+The issue is that you have many different concentrations and days, and only one observation (of CFU) for that day. ANOVA requires that you have multiple observations (CFU) for each group (day).
+
+In this case, a (non-parametric) correlation would be more appropriate.
+
+```{r}
+slurryDF_new$numtrt = c(1,2,3,4,5,6,1,2,3,4,5,6,1,2,3,4,5,6,1,2,3,4,5,6,1,2,3,4,5,6,1,2,3,4,5,6)
+
+head(slurryDF_new)
+```
+
+
+
+```{r}
+cor.test(as.numeric(slurryDF_new$Day)*slurryDF_new$numtrt, slurryDF_new$logCFU, method = "spearman")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+

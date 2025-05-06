@@ -1,0 +1,72 @@
+Meeting: 24-109
+Attendees: Sumeeth Guda, Dr. Chong Gu, Dr. Brandon Kistler, Kara Shields
+
+The main goal of clinet is to get power analysis done for a grant. 
+
+this project is for Kara's undergraduate thesis project. 
+
+Background: 
+Survey questionarie to ask dieticians and clinics to gauge chronic kidney disease
+
+She needs help to do power analysis and valdiate the survey. They are interested in how chronic kidney disease is affected with in-patient treatments
+
+One of the things they are going to test is to see if characteristics of the dieticians are affected by experience and location. To see if the data
+
+In hospital, there are differences in what they are doing in hospitals based on what 
+
+In small hospitals the response is based on menu redaction
+
+Determins in hosp theya re working in have differences in practices among the hospitals. And if the dieticians themselves have experience & certificaitons in ckidneydisease with respect to the hospitals. 
+
+Survey: 
+Asks dieticians about their experiences and the policies their clinics have with chronic kidney disease. 
+
+Gu: You have a survey design, and you are collecting personal characteristics of the dieticians and the working environments. Have personal demogrpahics includign training. This could be a causal regression side
+
+Additionally they are collecting data for current practice, (Descriptive statistics). Based on survery they are explogin how the demographics & working environment affect the attitude of practice. 
+
+Can get down to specifics later on, but overall this sounds like a regression kind of structure (Not to rule out chisq). 
+
+Have a row of independent variables and row of outcome variables.
+
+Power analysis: 
+Once you have a specific hypothesis and you want to ensure certain power of the test, for that there are specific requirements that the client doesn't have
+1. Specific hypothesis (Change it to be more specific). One objective requires smaller sample size than others assuming the samplesizes are independent. We can do PA if we have physical measurement. 
+What is natural variability for value itself or Actual value + mesaurement error.
+2. Need to know the signal size. Want to detect the differences of different sizes. 
+
+W/o specific hypothesis or natural varaiblity or signal size. We are unable to do a power analysis. 
+
+However in this situation, its more of a observational study than a design. Power analysis cannot be administered, but we can hold similar studies and get more data. 
+
+We will work with whatever data is given to us. For IRB, just quote a similar study. Triple digits are prefered, we are more cautious with lower responses. 
+
+They are trying to justify their sample in some way: 
+- This study is observational study with regression kind of structure. 
+- If they quote similar studies, this can be a good baseline for the IRB. But more responses is better. 
+
+They proposed the original tool, now they are testing it. 
+
+They created the tool, but IU bloomington CTSI will deploy the survey and plan the validation study to improve the logistics of the sruvey. 
+
+Validation survey will happen in spring, but they will collect data in summer. 
+
+Gu: Lots of factors can affect things, More factors that are being assessed -> More samples are needed. Whatever data is available to us we can work with this, but any inference we get from the samples needs to have be representative. 
+Whatever we get from the sample, if we utilize the limited resources effectivley, we need to narrow the scope. 
+
+Different locations can have an effect on the samples. Mixing the different sources, that might complicate the analysis. Having personal demographics vs working environment might depend on the locality. 
+
+Gu: Try to limit the data based on location (IN, CA, etc). The same IV might function differenly based on the locality. can break down with multiple homo sub groups within the same model. 
+
+If something can affect how thigns work, the homo data set is preferred since we can detect the signal easier at the expense of a lower scope. 
+
+BK: National effect is bigger than state effect. They can collect data at both state and regional level. Gu doesn't know if this will make a difference. 
+
+Can't get access to specific individuals in hospital (dieticians). 
+
+Gu: When we do analysis we can account for the correltaion of the individuals working in the same system. IF dieticians work in same hospital or system, their work is definitely correlated. If we want to rpeserve anonimity, we could assign codenames 
+to the hospitals but with certain changes. If different individuals are affiliated in anyway we could anonomize the data. 
+
+We will come up with specific research questions and determine how to solve them one at a time. For power analysis just quote past studies. 
+
+Data will be collected during Fall 2025. If they have a limited amount of data or dummy data we could use that as a baseline to come up with the analysis. For the full dataset you can use the techniques developed on the dummy dataset for the full dataset. 

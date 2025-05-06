@@ -1,0 +1,1 @@
+environment, copulas, intgroup, nbrgroup, descendant, gender

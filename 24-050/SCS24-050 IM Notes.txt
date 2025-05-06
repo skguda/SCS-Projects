@@ -1,0 +1,65 @@
+Client Leah Nodar
+
+Attendees: Leah Nodar, Felicia Roberts, Bruce Craig, Sumeeth Guda
+
+Background: 
+The big picture that the client is trying to solve is investigating a historical dataset from the 1920s 
+which gives a distinct dialect from a small city. The small dialect has evolved over the decades, and see how the dialect eveolved over time
+based on the 7 features. The data is a written description based on zora neal hurston non-fiction. 
+
+Client has certain features and clues, but there are different enviroments that the client are looking at. Client is looking at frequencies from the 3 areas. 
+
+i.e th as d. Of those th sounds how many are d's. The environment is where the sounds are happening. 
+
+Client is counting how many times the instance happens for each individual, and then aggregating the collective
+groups. 
+
+She is investigating 7 features, for each feature she is looking at the number of the the environment occurs, and the number of times the speaker has spoken. 
+
+The client is still collecting the data. 
+
+To compare the 70's and the 90's, you can look at each feature and do comparisons with each feature. You can look at each proportions (Groups are different sizes). What she should do is make a comparison of the frequencies and tell if there is difference between the 70's and 90's. 
+
+Statistically, it might be tricky to determine difference because 
+of the small sample size. 
+
+Client needs to keep in mind each of the individuals are accurate depictions of the gorups. In order to have statistical relevance. 
+
+Representative: Don't want to have 3 individuals from the same family. You ideally want disjont participants. 
+
+Client wants to see if the features are different for each group. Is the detail of the two groups different. 
+
+How craig would do the analysis: 
+- Create a small dataset (Limit the number of individuals)
+- For each individual have a row in an excel spreadsheet and cound the features frequencies. The next column will be the number of environments where they speak the features, the last colum is the group labeling, and the final is what time period (70s, 90s)
+- Can include groups, features, and interaction terms. The breakdowns of the groups can show how the groups are different
+- Consider using logistic regression
+- Client is comfortable using R.
+- The one danger we can experience is over/under dispersion. SInce the binomial distribution has probabibility of success defines the variance. The variance cannot change with the subjects. There might be more than just binomial variability. Some of the gorups/individuals might have more variability, which might not account 
+for the additional variability under the binomial model.  Cannot determine this until the model is actually run. 
+- Data is public / opensource
+
+Dr.Roberts mentioned the sample is convenient and no one is from the same family. 
+- Logistic analysis to start, and if there is additional variabiity then move to logistic distrbution which allows for additional variability then shift to a quasi binom variable or a beta binom that adds to the different variability. 
+- The probability is rather small for the dataset and when this is the case, the poission distribution can be used instead in this setting. Use a rate model instead to compare the distributions. But this used if there is any issues with the binomial. 
+
+- There are covariates between the groups expericlaly with regards to gender/sex. 
+- Need to go through the dataset and look through the analysis and do anova. To see each of the proportions / ratios for each individual and looking into the proportion differences. Binomial will care about probabilities of differecnes of the features. 
+- Need to do binomial analysis first. 
+- If client chooses one or 2 of the features, client and I can meet to do the analysis and focus on those 2 currently before she does the rest of the 5. 
+- We are ending in late July and if we cannot finish up then client can return in the fall. 
+- Doing 7 analysis for 7 variables. With respect to overall changes, you will need to do individual analysis anyways like an overall F test type of comparison. But overall experiment will be complicated.  
+
+
+
+
+
+Data description: 
+
+
+Problem:
+
+What the client needs help with: 
+
+Recommendations + Responsibilities: 
+

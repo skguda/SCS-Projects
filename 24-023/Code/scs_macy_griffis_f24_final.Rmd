@@ -1,0 +1,514 @@
+---
+title: "SCS24_023_Analysis"
+author: "Sumeeth Guda"
+date: "2024-12-02"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(esc)
+library(readxl)
+library(glue)
+library(lme4)
+library(pbkrtest)
+library(tidyr)
+library(multcomp)
+```
+
+## Read the data
+```{r}
+swallowDF = read.csv("MGThesis_StatisticalAnalysis_Wearable Sensors Master_V2_pre_for SCS_10.3.csv")
+swallowDF <- swallowDF[, -which(names(swallowDF) == "Ethnicity")]
+swallowDF = swallowDF[complete.cases(swallowDF),c(5:53)]
+
+left = c(6,9,12,15,18,21,24,27,30,33,36,39,42,45,48,51)-5
+swallowL = swallowDF[,left]
+swallowL$Participant = as.factor(swallowDF$Participant)
+swallowL$Side = as.factor(c(1,1,1,1,1,1,1,1,1,1,1,1,1,1))
+colnames(swallowL) <- gsub('L','',colnames(swallowL))
+
+swallowL
+
+right = c(6,9,12,15,18,21,24,27,30,33,36,39,42,45,48,51) + 1 - 5
+swallowR = swallowDF[,right]
+swallowR$Participant = as.factor(swallowDF$Participant)
+swallowR$Side = as.factor(c(1,1,1,1,1,1,1,1,1,1,1,1,1,1)+1)
+colnames(swallowR) <- gsub('R','',colnames(swallowR))
+
+swallowR
+```
+
+## Seperate the data into the 4 groups 
+```{r} 
+AM = c(1,2,3,4)
+TTP = AM + 4
+BD = AM + 8
+AD = AM + 12
+
+ml5 = c(1,1,1,1,1,1,1,1,1,1,1,1,1,1) # 5ML is 1
+PU =  c(1,1,1,1,1,1,1,1,1,1,1,1,1,1)+1 # PU is 2
+ES = c(1,1,1,1,1,1,1,1,1,1,1,1,1,1)+2 # ES is 3
+MM = c(1,1,1,1,1,1,1,1,1,1,1,1,1,1)+3 # MM is 4
+
+task = append(ml5, PU)
+task = append(task, ES)
+task = append(task, MM)
+task = as.factor(task)
+
+##AM Data
+AM = append(AM, c(17,18))
+
+AMR = swallowR[,AM]
+AML = swallowL[,AM]
+
+AML = cbind(AML[5:6], stack(AML[1:4]))
+AML$Task = task
+AML$Response= AML$values
+AML = AML[,c(1,2,5,6)]
+
+AMR = cbind(AMR[5:6], stack(AMR[1:4]))
+AMR$Task = task
+AMR$Response= AMR$values
+AMR = AMR[,c(1,2,5,6)]
+
+AMDF = rbind(AML, AMR)
+AMDF
+
+## TTP Data
+TTP = append(TTP, c(17,18))
+
+TTPR = swallowR[,TTP]
+TTPL = swallowL[,TTP]
+
+TTPL = cbind(TTPL[5:6], stack(TTPL[1:4]))
+TTPL$Task = task
+TTPL$Response= TTPL$values
+TTPL = TTPL[,c(1,2,5,6)]
+
+TTPR = cbind(TTPR[5:6], stack(TTPR[1:4]))
+TTPR$Task = task
+TTPR$Response= TTPR$values
+TTPR = TTPR[,c(1,2,5,6)]
+
+TTPDF = rbind(TTPL, TTPR)
+TTPDF
+
+
+## AD Data
+AD = append(AD, c(17,18))
+
+ADR = swallowR[,AD]
+ADL = swallowL[,AD]
+
+ADL = cbind(ADL[5:6], stack(ADL[1:4]))
+ADL$Task = task
+ADL$Response= ADL$values
+ADL = ADL[,c(1,2,5,6)]
+
+ADR = cbind(ADR[5:6], stack(ADR[1:4]))
+ADR$Task = task
+ADR$Response= ADR$values
+ADR = ADR[,c(1,2,5,6)]
+
+ADDF = rbind(ADL, ADR)
+ADDF
+
+## BD Data
+BD = append(BD, c(17,18))
+
+BDR = swallowR[,BD]
+BDL = swallowL[,BD]
+
+BDL = cbind(BDL[5:6], stack(BDL[1:4]))
+BDL$Task = task
+BDL$Response= BDL$values
+BDL = BDL[,c(1,2,5,6)]
+
+BDR = cbind(BDR[5:6], stack(BDR[1:4]))
+BDR$Task = task
+BDR$Response= BDR$values
+BDR = BDR[,c(1,2,5,6)]
+
+BDDF = rbind(BDL, BDR)
+BDDF
+```
+
+# AM analysis
+## Do model compariton and test to see which covariance structure is more appropriate for the responses
+
+Reduced model:    lmer(Y~ Task*Side + (1 | Patient) + (1 | Task:Patient), data=Data)
+
+Full model:       lmer(Y~ Task*Side + (1 | Patient) + (1 | Task:Patient) + (1| Side:Patient), data=Data)
+
+Lower BIC means the better fitting
+
+```{r}
+AM_mod1 = lmer(Response~Task*Side + (1 | Participant) + (1 | Task:Participant), AMDF) # Reduced model
+AM_mod2 = lmer(Response~Task*Side + (1 | Participant) + (1 | Task:Participant) + (1| Side:Participant), AMDF) # Full model
+
+resp = "AM"
+glue("{resp} Model comparisons:")
+glue(">>> BIC of {resp}_mod1: {BIC(AM_mod1)} || {resp}_mod2: {BIC(AM_mod2)}")
+```
+Residual analysis
+```{r}
+plot(predict(AM_mod1), resid(AM_mod1))
+abline(0,0)
+hist(resid(AM_mod1))
+
+
+plot(predict(AM_mod2), resid(AM_mod2))
+abline(0,0)
+hist(resid(AM_mod2))
+
+```
+
+
+
+
+If you see outliers redo the model but include log scaling this will minimize the effect of the outliers
+```{r}
+AM_mod1 = lmer(log(Response)~Task*Side + (1 | Participant) + (1 | Task:Participant), AMDF) # Reduced model
+AM_mod2 = lmer(log(Response)~Task*Side + (1 | Participant) + (1 | Task:Participant) + (1| Side:Participant), AMDF) # Full model
+
+resp = "AM"
+glue("{resp} Model comparisons:")
+glue(">>> BIC of {resp}_mod1: {BIC(AM_mod1)} || {resp}_mod2: {BIC(AM_mod2)}")
+
+# Get the residual plots of the models
+plot(predict(AM_mod1), resid(AM_mod1))
+abline(0,0)
+hist(resid(AM_mod1))
+
+
+plot(predict(AM_mod2), resid(AM_mod2))
+abline(0,0)
+hist(resid(AM_mod2))
+
+```
+
+Logging the model seemed to do the trick, because the BIC for the second model has the lower BIC, ultimately use the full model
+
+Model = lmer(log(Y)~ Task*Side + (1 | Patient) + (1 | Task:Patient) + (1| Side:Patient), data=Data)
+
+The interaction of Patient and Side is significant!!
+
+## Further model comparison to verify if the task*side interaction is significant
+```{r}
+# Task*side = task + side + task*side
+print("##### AM MODEL Comparisons #####")
+AM_mod3 = lmer(log(Response)~Task*Side + (1 | Participant) + (1 | Task:Participant)+ (1| Side:Participant), AMDF, REML = FALSE)
+
+
+AM_mod4 = lmer(log(Response)~Task + Side + (1 | Participant) + (1 | Task:Participant)+ (1| Side:Participant), AMDF, REML = FALSE) 
+
+KRmodcomp(AM_mod3, AM_mod4)
+
+#summary(AM_mod3)
+```
+The p value is 0.6909 which is greater than 0.05. This indicates that the task*side interaction isn't statistically significant, but we will include it anyways in the model to adhere to the covariance model.
+
+## Task comparisons
+```{r}
+print("########################")
+print("###   AM MOdel       ###")
+print("########################")
+
+lmm = lmer(log(Response) ~ Task*Side + (1 | Participant) + (1 | Task:Participant) + (1|Side:Participant), AMDF)
+# Perform Tukey's HSD test using multcomp
+tukey_test <- glht(lmm, linfct = mcp(Task = "Tukey"))
+
+# View summary of the Tukey test
+
+# 1 is water, 2 pudding, 3 avg(water, pudding), 4 ES, 5 mendhelsohn
+print("Labelings: ")
+print("{5ml: 1, Pudding: 2, Effortful swallow: 3, Mendhelsohn: 4}")
+
+summary(tukey_test)
+```
+Linear Hypotheses:
+           Estimate Std. Error z value Pr(>|z|)    
+2 - 1 == 0   0.2417     0.1682   1.438  0.47583    
+3 - 1 == 0   0.5054     0.1682   3.006  0.01410 *   >>>> Water and ES are different
+4 - 1 == 0   1.1218     0.1682   6.671  < 0.001 *** >>>> Water and Mendelson are different
+3 - 2 == 0   0.2637     0.1682   1.568  0.39695    
+4 - 2 == 0   0.8800     0.1682   5.233  < 0.001 *** >>>> Pudding and mendelson are different
+4 - 3 == 0   0.6164     0.1682   3.665  0.00127 **  >>>> Es and mendelson are different
+
+
+# BD analysis
+## Do model compariton and test to see which covariance structure is more appropriate for the responses
+
+Reduced model:    lmer(Y~ Task*Side + (1 | Patient) + (1 | Task:Patient), data=Data)
+
+Full model:       lmer(Y~ Task*Side + (1 | Patient) + (1 | Task:Patient) + (1| Side:Patient), data=Data)
+
+Lower BIC means the better fitting
+```{r}
+BD_mod1 = lmer(Response~Task*Side + (1 | Participant) + (1 | Task:Participant), BDDF) # Reduced model
+BD_mod2 = lmer(Response~Task*Side + (1 | Participant) + (1 | Task:Participant) + (1| Side:Participant), BDDF) # Full model
+
+resp = "BD"
+glue("{resp} Model comparisons:")
+glue(">>> BIC of {resp}_mod1: {BIC(BD_mod1)} || {resp}_mod2: {BIC(BD_mod2)}")
+
+# Get the residual plots of the models
+plot(predict(BD_mod1), resid(BD_mod1))
+abline(0,0)
+hist(resid(BD_mod1))
+plot(predict(BD_mod2), resid(BD_mod2))
+abline(0,0)
+hist(resid(BD_mod2))
+```
+There is some outliers in the above, hence lets use log to transform and redo the analysis
+
+```{r}
+BD_mod1 = lmer(log(Response)~Task*Side + (1 | Participant) + (1 | Task:Participant), BDDF) # Reduced model
+BD_mod2 = lmer(log(Response)~Task*Side + (1 | Participant) + (1 | Task:Participant) + (1| Side:Participant), BDDF) # Full model
+
+resp = "BD"
+glue("{resp} Model comparisons:")
+glue(">>> BIC of {resp}_mod1: {BIC(BD_mod1)} || {resp}_mod2: {BIC(BD_mod2)}")
+
+# Get the residual plots of the models
+plot(predict(BD_mod1), resid(BD_mod1))
+abline(0,0)
+hist(resid(BD_mod1))
+
+plot(predict(BD_mod2), resid(BD_mod2))
+abline(0,0)
+hist(resid(BD_mod2))
+
+```
+Since the BIC of the reduced model is 49.31 vs the full model's BIC of 53.1335, ultimately we choose the reduced model and don't use the patient side interaction in the model
+
+Now lets check is the task side interaction is significant in the model
+```{r}
+print("###############################")
+print("##### BD MODEL Comparisons #####")
+print("###############################")
+
+BD_mod3 = lmer(log(Response)~Task*Side + (1 | Participant) + (1 | Task:Participant), BDDF, REML = FALSE)
+
+
+BD_mod4 = lmer(log(Response)~Task + Side + (1 | Participant) + (1 | Task:Participant), BDDF, REML = FALSE) 
+
+KRmodcomp(BD_mod3, BD_mod4)
+
+```
+The task side interaction isn't significant since the p value is 0.2651. However we will still include it nevertheless.
+
+
+
+```{r}
+print("########################")
+print("###   BD MOdel       ###")
+print("########################")
+
+lmm = lmer(log(Response) ~ Task*Side + (1 | Participant) + (1 | Task:Participant), BDDF)
+# Perform Tukey's HSD test using multcomp
+tukey_test <- glht(lmm, linfct = mcp(Task = "Tukey"))
+
+# View summary of the Tukey test
+
+# 1 is water, 2 pudding, 3 avg(water, pudding), 4 ES, 5 mendhelsohn
+print("Labelings: ")
+print("{5ml: 1, Pudding: 2, Effortful swallow: 3, Mendhelsohn: 4}")
+
+summary(tukey_test)
+```
+
+Linear Hypotheses:
+           Estimate Std. Error z value Pr(>|z|)    
+2 - 1 == 0   0.1140     0.1668   0.683    0.903    
+3 - 1 == 0   0.2216     0.1668   1.328    0.545    
+4 - 1 == 0   1.1713     0.1668   7.021   <1e-05 *** >>>> Water mendelson different
+3 - 2 == 0   0.1076     0.1668   0.645    0.917    
+4 - 2 == 0   1.0573     0.1668   6.337   <1e-05 *** >>>> Pudding mendelson different
+4 - 3 == 0   0.9497     0.1668   5.692   <1e-05 *** >>>> ES mendelson different
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+(Adjusted p values reported -- single-step method)
+
+# TTP Analysis
+## Do model compariton and test to see which covariance structure is more appropriate for the responses
+
+Reduced model:    lmer(Y~ Task*Side + (1 | Patient) + (1 | Task:Patient), data=Data)
+
+Full model:       lmer(Y~ Task*Side + (1 | Patient) + (1 | Task:Patient) + (1| Side:Patient), data=Data)
+
+Lower BIC means the better fitting
+```{r}
+TTP_mod1 = lmer(Response~Task*Side + (1 | Participant) + (1 | Task:Participant), TTPDF) # Reduced model
+TTP_mod2 = lmer(Response~Task*Side + (1 | Participant) + (1 | Task:Participant) + (1| Side:Participant), TTPDF) # Full model
+
+resp = "TTP"
+glue("{resp} Model comparisons:")
+glue(">>> BIC of {resp}_mod1: {BIC(TTP_mod1)} || {resp}_mod2: {BIC(TTP_mod2)}")
+
+# Get the residual plots of the models
+plot(predict(TTP_mod1), resid(TTP_mod1))
+abline(0,0)
+hist(resid(TTP_mod1))
+plot(predict(TTP_mod2), resid(TTP_mod2))
+abline(0,0)
+hist(resid(TTP_mod2))
+```
+There is a clear outlier, hence we log transform the response
+
+```{r}
+TTP_mod1 = lmer(log(Response)~Task*Side + (1 | Participant) + (1 | Task:Participant), TTPDF) # Reduced model
+TTP_mod2 = lmer(log(Response)~Task*Side + (1 | Participant) + (1 | Task:Participant) + (1| Side:Participant), TTPDF) # Full model
+
+resp = "TTP"
+glue("{resp} Model comparisons:")
+glue(">>> BIC of {resp}_mod1: {BIC(TTP_mod1)} || {resp}_mod2: {BIC(TTP_mod2)}")
+
+# Get the residual plots of the models
+plot(predict(TTP_mod1), resid(TTP_mod1))
+abline(0,0)
+hist(resid(TTP_mod1))
+plot(predict(TTP_mod2), resid(TTP_mod2))
+abline(0,0)
+hist(resid(TTP_mod2))
+```
+There might be one individual who is inflating the values, however lets use the full model, since the BIC was 92.84 against the reduced model's 99.378 BIC
+
+## Further model comparison to verify if the task*side interaction is significant
+```{r}
+# Task*side = task + side + task*side
+print("##### TTP MODEL Comparisons #####")
+TTP_mod3 = lmer(log(Response)~Task*Side + (1 | Participant) + (1 | Task:Participant)+ (1| Side:Participant), TTPDF, REML = FALSE)
+
+
+TTP_mod4 = lmer(log(Response)~Task + Side + (1 | Participant) + (1 | Task:Participant)+ (1| Side:Participant), TTPDF, REML = FALSE) 
+
+KRmodcomp(TTP_mod3, TTP_mod4)
+
+#summary(AM_mod3)
+```
+The p value is 0.02962, this means that the interaction between side and task is important and needs to be in the model. 
+
+## Task comparisons
+```{r}
+print("########################")
+print("###  TTP MOdel       ###")
+print("########################")
+
+lmm = lmer(log(Response) ~ Task*Side + (1 | Participant) + (1 | Task:Participant) + (1|Side:Participant), TTPDF)
+# Perform Tukey's HSD test using multcomp
+tukey_test <- glht(lmm, linfct = mcp(Task = "Tukey"))
+
+# View summary of the Tukey test
+
+# 1 is water, 2 pudding, 3 avg(water, pudding), 4 ES, 5 mendhelsohn
+print("Labelings: ")
+print("{5ml: 1, Pudding: 2, Effortful swallow: 3, Mendhelsohn: 4}")
+
+summary(tukey_test)
+```
+Linear Hypotheses:
+           Estimate Std. Error z value Pr(>|z|)   
+2 - 1 == 0  0.36945    0.09654   3.827   <0.001 *** >>>> Water pudding significantly different
+3 - 1 == 0  0.54973    0.09654   5.694   <0.001 *** >>>> Water ES significantly different
+4 - 1 == 0  0.78909    0.09654   8.173   <0.001 *** >>>> Water Mendelson significantly different
+3 - 2 == 0  0.18028    0.09654   1.867   0.2422    
+4 - 2 == 0  0.41963    0.09654   4.347   <0.001 *** >>>> Pudding mendelson significantly different
+4 - 3 == 0  0.23936    0.09654   2.479   0.0628 .   >>>> Mendelson ES are different (Under alpha = 0.1)
+---
+
+# AD analysis
+## Do model compariton and test to see which covariance structure is more appropriate for the responses
+
+Reduced model:    lmer(Y~ Task*Side + (1 | Patient) + (1 | Task:Patient), data=Data)
+
+Full model:       lmer(Y~ Task*Side + (1 | Patient) + (1 | Task:Patient) + (1| Side:Patient), data=Data)
+
+Lower BIC means the better fitting
+
+```{r}
+AD_mod1 = lmer(Response~Task*Side + (1 | Participant) + (1 | Task:Participant), ADDF) # Reduced model
+AD_mod2 = lmer(Response~Task*Side + (1 | Participant) + (1 | Task:Participant) + (1| Side:Participant), ADDF) # Full model
+
+resp = "AD"
+glue("{resp} Model comparisons:")
+glue(">>> BIC of {resp}_mod1: {BIC(AD_mod1)} || {resp}_mod2: {BIC(AD_mod2)}")
+
+plot(predict(AD_mod1), resid(AD_mod1))
+abline(0,0)
+hist(resid(AD_mod1))
+
+
+plot(predict(AD_mod2), resid(AD_mod2))
+abline(0,0)
+hist(resid(AD_mod2))
+```
+You don't need to log transform the data, there are no discernable outliers, but lets do so anyways for consistency and as a precaution. 
+
+```{r}
+AD_mod1 = lmer(log(Response)~Task*Side + (1 | Participant) + (1 | Task:Participant), ADDF) # Reduced model
+AD_mod2 = lmer(log(Response)~Task*Side + (1 | Participant) + (1 | Task:Participant) + (1| Side:Participant), ADDF) # Full model
+
+resp = "AD"
+glue("{resp} Model comparisons:")
+glue(">>> BIC of {resp}_mod1: {BIC(AD_mod1)} || {resp}_mod2: {BIC(AD_mod2)}")
+
+plot(predict(AD_mod1), resid(AD_mod1))
+abline(0,0)
+hist(resid(AD_mod1))
+
+
+plot(predict(AD_mod2), resid(AD_mod2))
+abline(0,0)
+hist(resid(AD_mod2))
+```
+Lets continue forward with the log transform approach, and further more it is evidently clear that the full model is the best covariance structure to use for the data. It has BIC of 80, while the reduced has a BIC of 116. 
+
+## Further model comparison to verify if the task*side interaction is significant
+```{r}
+# Task*side = task + side + task*side
+print("##### AD MODEL Comparisons #####")
+AD_mod3 = lmer(log(Response)~Task*Side + (1 | Participant) + (1 | Task:Participant)+ (1| Side:Participant), ADDF, REML = FALSE)
+
+
+AD_mod4 = lmer(log(Response)~Task + Side + (1 | Participant) + (1 | Task:Participant)+ (1| Side:Participant), ADDF, REML = FALSE) 
+
+KRmodcomp(AD_mod3, AD_mod4)
+
+#summary(AM_mod3)
+```
+The interaction between task and side isn't statistically significant, but we will include it anyways in the model. 
+
+## Task comparisons
+```{r}
+print("########################")
+print("###   AD MOdel       ###")
+print("########################")
+
+lmm = lmer(log(Response) ~ Task*Side + (1 | Participant) + (1 | Task:Participant) + (1|Side:Participant), ADDF)
+# Perform Tukey's HSD test using multcomp
+tukey_test <- glht(lmm, linfct = mcp(Task = "Tukey"))
+
+# View summary of the Tukey test
+
+# 1 is water, 2 pudding, 3 avg(water, pudding), 4 ES, 5 mendhelsohn
+print("Labelings: ")
+print("{5ml: 1, Pudding: 2, Effortful swallow: 3, Mendhelsohn: 4}")
+
+summary(tukey_test)
+```
+Linear Hypotheses:
+           Estimate Std. Error z value Pr(>|z|)   
+2 - 1 == 0  0.12772    0.09222   1.385  0.50881   
+3 - 1 == 0  0.28381    0.09222   3.077  0.01130 * >>> Water ES are different
+4 - 1 == 0 -0.04957    0.09222  -0.538  0.94987   
+3 - 2 == 0  0.15609    0.09222   1.693  0.32758   
+4 - 2 == 0 -0.17730    0.09222  -1.922  0.21862   
+4 - 3 == 0 -0.33338    0.09222  -3.615  0.00163 ** >>> ES and Mendelson are different. 
+

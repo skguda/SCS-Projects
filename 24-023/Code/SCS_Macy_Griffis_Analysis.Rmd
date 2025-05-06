@@ -1,0 +1,340 @@
+---
+title: "SCS_Macy_Griffis_Analysis"
+author: "Sumeeth Guda"
+date: "2024-04-05"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Libraries
+```{r}
+library(reshape)
+library(ggplot2)
+library(dplyr)
+```
+
+## Read the data
+
+```{r}
+swallowDF = read.csv("MGThesis_StatisticalAnalysis_Wearable Sensors Master_V2_Pre_3.28_updated.csv", header = TRUE)
+swallowDF = head(swallowDF, 9)
+swallowDF
+```
+
+## Variable descriptions
+Descriptions = 
+{L/R - left and right, AM - amplitude (%), TTP - time to peak, BD - burst duration (seconds), AV - average of both sides}
+
+Swallow ORder =
+{5ml - 5ml swallow, PU - pudding swallow, ES - effortful swallow, MM - mendelsohn}
+
+## Goals
+-	Analyze the collected data to find any patterns within the Left-Right test. Verify the RCBD assumptions for the data. 
+
+
+-	Fit a glm model into the data, investigate the residuals of the model. Investigate if ordering matters. With respect to the swallowing tasks. Investigate the residuals of the right and left sides and verify that they are the same, otherwise report any anomalies. Complete the regression analysis in R.
+
+## Verifying the Left and Right Sides are the same
+
+```{r}
+#colnames(swallowDF)
+leftcols = c(5,8,11,14,17,20,23,26,29,32,35,38)
+rightcols = leftcols + 1
+averagecols = leftcols + 2
+
+patient = c(1,2,3,4,5,6,7,8,9)
+
+swallowDF_left = swallowDF[,c(1,leftcols)]
+swallowDF_right = swallowDF[,c(1,rightcols)]
+swallowDF_avg = swallowDF[,c(1,averagecols)]
+
+swallowDF_left$Patient = patient
+swallowDF_right$Patient = patient
+swallowDF_avg$Patient = patient
+
+swallowDF_left
+swallowDF_right
+
+swallowDF_avg
+
+
+```
+
+
+### Average swallow Visuals
+
+```{r}
+
+amplitude = c(14,2,3,4,5)
+timeToPeak = c(14,6,7,8,9)
+burst = c(14,10,11,12,13)
+
+swallowDF_avg_amp = swallowDF_avg[,amplitude]
+
+
+
+plot1 = matplot(swallowDF_avg_amp$Patient, cbind(swallowDF_avg_amp$AVAM5ml, swallowDF_avg_amp$AVAMPU, swallowDF_avg_amp$AVAMES, swallowDF_avg_amp$AVAMMM), type = "l", lty = 1, 
+        col = c("red", "blue", "green", "black"), xlab = "Patient", 
+        ylab = "Amplitude", main = "Average side amplitude")
+
+legend("topright", legend = c("5ML", "PU", "ES", "MM"), col = c("red", "blue", "green","black"), lty = 1)
+
+#plot2 = matplot(swallowDF_avg_burst$Patient, cbind(swallowDF_avg_burst$AVAM5ml, swallowDF_avg_burst$AVAMPU, #swallowDF_avg_burst$AVAMES, swallowDF_avg_burst$AVAMMM), type = "l", lty = 1, 
+#        col = c("red", "blue", "green", "black"), xlab = "Patient", 
+#        ylab = "Burst", main = "Average side Burst duration")
+
+plot2 = matplot(swallowDF_avg$Patient, cbind(swallowDF_avg$AVBD5ml, swallowDF_avg$AVBDPU, swallowDF_avg$AVBDES, swallowDF_avg$AVBDMM), type = "l", lty = 1, 
+        col = c("red", "blue", "green", "black"), xlab = "Patient", 
+        ylab = "Burst", main = "Average side Burst duration")
+legend("topright", legend = c("5ML", "PU", "ES", "MM"), col = c("red", "blue", "green","black"), lty = 1)
+
+#plot3 = matplot(swallowDF_avg_ttp$Patient, cbind(swallowDF_avg_ttp$AVAM5ml, swallowDF_avg_ttp$AVAMPU, swallowDF_avg_ttp$AVAMES, #swallowDF_avg_ttp$AVAMMM), type = "l", lty = 1, 
+#        col = c("red", "blue", "green", "black"), xlab = "Patient", 
+#        ylab = "Time to peak", main = "Average side time to peak")
+
+plot3 = matplot(swallowDF_avg$Patient, cbind(swallowDF_avg$AVTTP5ml, swallowDF_avg$AVTTPPU, swallowDF_avg$AVTTPES, swallowDF_avg$AVTTPMM), type = "l", lty = 1, 
+        col = c("red", "blue", "green", "black"), xlab = "Patient", 
+        ylab = "Time to Peak", main = "Average side Time to Peak")
+
+
+
+legend("topright", legend = c("5ML", "PU", "ES", "MM"), col = c("red", "blue", "green","black"), lty = 1)
+
+
+```
+
+## Right side Visuals
+
+```{r}
+amplitude = c(14,2,3,4,5)
+timeToPeak = c(14,6,7,8,9)
+burst = c(14,10,11,12,13)
+
+
+plot1 = matplot(swallowDF_right$Patient, cbind(swallowDF_right$AM5mlR, swallowDF_right$AMPUR, swallowDF_right$AMESR, swallowDF_right$AMMMR), type = "l", lty = 1, 
+        col = c("red", "blue", "green", "black"), xlab = "Patient", 
+        ylab = "Amplitude", main = "Right side amplitude")
+
+legend("topright", legend = c("5ML", "PU", "ES", "MM"), col = c("red", "blue", "green","black"), lty = 1)
+
+plot2 = matplot(swallowDF_right$Patient, cbind(swallowDF_right$BD5mlR, swallowDF_right$BDPUR, swallowDF_right$BDESR, swallowDF_right$BDMMR), type = "l", lty = 1, 
+        col = c("red", "blue", "green", "black"), xlab = "Patient", 
+        ylab = "Amplitude", main = "Right side Burst Duration")
+legend("topright", legend = c("5ML", "PU", "ES", "MM"), col = c("red", "blue", "green","black"), lty = 1)
+
+
+plot3 = matplot(swallowDF_right$Patient, cbind(swallowDF_right$TTP5mlR, swallowDF_right$TTPPUR, swallowDF_right$TTPESR, swallowDF_right$TTPMMR), type = "l", lty = 1, 
+        col = c("red", "blue", "green", "black"), xlab = "Patient", 
+        ylab = "Amplitude", main = "Right side Time to peak")
+
+
+
+
+
+legend("topright", legend = c("5ML", "PU", "ES", "MM"), col = c("red", "blue", "green","black"), lty = 1)
+```
+
+## Left Side Visuals
+```{r}
+amplitude = c(14,2,3,4,5)
+timeToPeak = c(14,6,7,8,9)
+burst = c(14,10,11,12,13)
+
+
+plot1 = matplot(swallowDF_left$Patient, cbind(swallowDF_left$AM5mlL, swallowDF_left$AMPUL, swallowDF_left$AMESL, swallowDF_left$AMMML), type = "l", lty = 1, 
+        col = c("red", "blue", "green", "black"), xlab = "Patient", 
+        ylab = "Amplitude", main = "Left side amplitude")
+
+legend("topright", legend = c("5ML", "PU", "ES", "MM"), col = c("red", "blue", "green","black"), lty = 1)
+
+
+plot2 = matplot(swallowDF_left$Patient, cbind(swallowDF_left$BD5mlL, swallowDF_left$BDPUL, swallowDF_left$BDESL, swallowDF_left$BDMML), type = "l", lty = 1, 
+        col = c("red", "blue", "green", "black"), xlab = "Patient", 
+        ylab = "Amplitude", main = "Left side Burst Duration")
+
+legend("topright", legend = c("5ML", "PU", "ES", "MM"), col = c("red", "blue", "green","black"), lty = 1)
+
+plot3 = matplot(swallowDF_left$Patient, cbind(swallowDF_left$TTP5mlL, swallowDF_left$TTPPUL, swallowDF_left$TTPESL, swallowDF_left$TTPMML), type = "l", lty = 1, 
+        col = c("red", "blue", "green", "black"), xlab = "Patient", 
+        ylab = "Amplitude", main = "Left side Time to peak")
+
+
+
+
+
+legend("topright", legend = c("5ML", "PU", "ES", "MM"), col = c("red", "blue", "green","black"), lty = 1)
+```
+
+## L-R tests
+```{r}
+print("#########################################")
+print("### Left side vs right side Amplitude ###")
+print("#########################################")
+
+t.test(cbind(swallowDF_left$AM5mlL, swallowDF_left$AMPUL, swallowDF_left$AMESL, swallowDF_left$AMMML), cbind(swallowDF_right$AM5mlR, swallowDF_right$AMPUR, swallowDF_right$AMESR, swallowDF_right$AMMMR), alternative = "two.sided")
+
+### Conclusion: The means of the two sides amplitudes are different, but they are approximately the same. difference = 0.04
+
+print("###############################################")
+print("### Left side vs right side Burst Duration ###")
+print("###############################################")
+
+t.test(cbind(swallowDF_left$BD5mlL, swallowDF_left$BDPUL, swallowDF_left$BDESL, swallowDF_left$BDMML), cbind(swallowDF_right$BD5mlR, swallowDF_right$BDPUR, swallowDF_right$BDESR, swallowDF_right$BDMMR), alternative = "two.sided")
+
+
+### Conclusion: The means of the two sides burst duration are different, but they are approximately the same. difference = 0.04
+
+print("############################################")
+print("### Left side vs right side Time to peak ###")
+print("############################################")
+
+t.test(cbind(swallowDF_left$TTP5mlL, swallowDF_left$TTPPUL, swallowDF_left$TTPESL, swallowDF_left$TTPMML), cbind(swallowDF_right$TTP5mlR, swallowDF_right$TTPPUR, swallowDF_right$TTPESR, swallowDF_right$TTPMMR), alternative = "two.sided")
+
+### Conclusion: The means of the two sides ttp are different but approximately the same. difference = 0.01
+```
+### Combined visuals
+```{r}
+plot1 = matplot(swallowDF_left$Patient, cbind(swallowDF_left$AM5mlL, swallowDF_left$AMPUL, swallowDF_left$AMESL, swallowDF_left$AMMML, swallowDF_right$AM5mlR, swallowDF_right$AMPUR, swallowDF_right$AMESR, swallowDF_right$AMMMR), type = "l", lty = 1, 
+        col = c("red", "blue", "green", "black", "pink", "cyan", "brown", "grey"), xlab = "Patient", 
+        ylab = "Amplitude", main = "Left vs Right side amplitude")
+
+legend("top", legend = c("5MLL", "PUL", "ESL", "MML", "5MLR", "PUR", "ESR", "MMR"), col = c("red", "blue", "green","black", "pink", "cyan", "brown", "grey"), lty = 1)
+
+
+plot2 = matplot(swallowDF_left$Patient, cbind(swallowDF_left$BD5mlL, swallowDF_left$BDPUL, swallowDF_left$BDESL, swallowDF_left$BDMML, swallowDF_right$BD5mlR, swallowDF_right$BDPUR, swallowDF_right$BDESR, swallowDF_right$BDMMR), type = "l", lty = 1, 
+        col = c("red", "blue", "green", "black", "pink", "cyan", "brown", "grey"), xlab = "Patient", 
+        ylab = "Amplitude", main = "Left vs Right side burst duration")
+
+legend("top", legend = c("5MLL", "PUL", "ESL", "MML", "5MLR", "PUR", "ESR", "MMR"), col = c("red", "blue", "green","black", "pink", "cyan", "brown", "grey"), lty = 1)
+
+plot3 = matplot(swallowDF_left$Patient, cbind(swallowDF_left$TTP5mlL, swallowDF_left$TTPPUL, swallowDF_left$TTPESL, swallowDF_left$TTPMML, swallowDF_right$TTP5mlR, swallowDF_right$TTPPUR, swallowDF_right$TTPESR, swallowDF_right$TTPMMR), type = "l", lty = 1, 
+        col = c("red", "blue", "green", "black", "pink", "cyan", "brown", "grey"), xlab = "Patient", 
+        ylab = "Amplitude", main = "Left vs Right side TTP")
+
+legend("topright", legend = c("5MLL", "PUL", "ESL", "MML", "5MLR", "PUR", "ESR", "MMR"), col = c("red", "blue", "green","black", "pink", "cyan", "brown", "grey"), lty = 1)
+
+```
+
+## RCBD Analysis
+
+```{r}
+swallowDF_avg_new = swallowDF_avg[,c(2:14)]
+swallowDF_avg_transformed = melt(swallowDF_avg_new,variable_name = "Method", id = 'Patient')
+swallowDF_avg_transformed
+
+avg_mod = lm(value~Method,swallowDF_avg_transformed)
+summary(avg_mod)
+anova(avg_mod)
+```
+```{r}
+qf(1-0.05,11,96)
+```
+Under a null hypothesis that the methods are all equivalent, since the generated F-test statistic is 6.609 is greater than the asymptotic F test statistics of 1.8898 under significance value of 0.05. Ultimately reject the null and conclude that there exists difference between the 4 methods under the average results. 
+
+### Diagnostics of model
+```{r}
+qqnorm(avg_mod$residuals)
+qqline(avg_mod$residuals)
+
+plot(avg_mod$fitted.values, avg_mod$residuals)
+abline(0,0)
+
+hist(avg_mod$residuals)
+hist(avg_mod$fitted.values)
+
+```
+
+## Right vs left side regression analysis 
+
+```{r}
+## RIght side 
+swallowDF_right_new = swallowDF_right[,c(2:14)]
+swallowDF_right_transformed = melt(swallowDF_right_new,variable_name = "Method", id = 'Patient')
+#swallowDF_avg_transformed
+
+right_mod = lm(value~Method,swallowDF_right_transformed)
+print("#####################################")
+print("### RIGHT model summary and anova ###")
+print("#####################################")
+
+summary(right_mod)
+anova(right_mod)
+
+
+## LEft side
+swallowDF_left_new = swallowDF_left[,c(2:14)]
+swallowDF_left_transformed = melt(swallowDF_left_new,variable_name = "Method", id = 'Patient')
+#swallowDF_avg_transformed
+
+left_mod = lm(value~Method,swallowDF_left_transformed)
+print("#####################################")
+print("### lefT model summary and anova ###")
+print("#####################################")
+
+summary(left_mod)
+anova(left_mod)
+
+```
+### Diagnostics of left and right models
+```{r}
+## Right side analysis
+qqnorm(right_mod$residuals)
+qqline(right_mod$residuals)
+
+plot(right_mod$fitted.values, right_mod$residuals)
+abline(0,0)
+
+hist(right_mod$residuals)
+hist(right_mod$fitted.values)
+
+## left side analysis
+qqnorm(left_mod$residuals)
+qqline(left_mod$residuals)
+
+plot(left_mod$fitted.values, left_mod$residuals)
+abline(0,0)
+
+hist(left_mod$residuals)
+hist(left_mod$fitted.values)
+```
+
+## Joint analysis
+```{r}
+#anova(right_mod, left_mod)
+
+x = cbind(right_mod$fitted.values, left_mod$fitted.values)
+right = rep.int(0, 108)
+left = rep.int(1,108)
+
+sides = c(right, left)
+fv = c(right_mod$fitted.values, left_mod$fitted.values)
+res = c(right_mod$residuals, left_mod$residuals)
+
+fit_resid_df = data.frame(sides, fv, res)
+
+#fit_resid_df
+
+ggplot(data = fit_resid_df, aes(x = fv, y = res, color = as.factor(sides))) + geom_point() + scale_colour_manual(values = c("tomato","blue")) + labs(x="Fitted values",y="Residuals",fill = "sides")
+ 
+
+
+
+
+#matplot(x y = cbind(right_mod$residuals, left_mod$fitted.values))
+
+
+```
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,42 @@
+Worked on current project since 2020.
+
+Fourth year they are working on this project. Final year of data collection, client wants to wrap this project up.
+
+Initial idea is that people either conform to conventilanl or organic production .Client's way is a mixed system. Take parts of both systems to create a new one
+
+30 different treatments. Applying conventional or organic nutrients
+4 different kinds of seeds. 
+
+Applied a lot of carbon during the first year, and then put nitrogen back in the ground. 
+
+Either planted crops in the fall or winter. 
+
+40 different nutrients they are measuring (in soil, above soil, yield)
+
+3 different pepper grinds. 
+
+Wants some type of regression analysis done to the fourth year soil data. 
+
+
+1. Wants to validate the analysis.
+4 locations, 3 times the amount of data: soil data, climate data
+
+Experiments are located in 3 locations of Indiana with different soil conditions. 
+
+Look into a select few variables in the soil data for the 3 locations. (anything between 70-30 is good soil, and < 30 is best)
+Measures the amount of carbon dioxide. 
+
+6-8 max output variables that we can look at. Dependent variable is against the time. 
+
+Always 2 sets of information (Spring measurement before fertilizer, fall measurement after fertlizer) Measure how much is left after the growing season. 
+
+Wants visuals to be like the poster. 
+
+Wants to see effect of cover crop over a season. If the cover crop has a positive effect on the amount of nutrients in the soil. How can we expect a increase or decrease for a crop. 
+
+Compare spring vs spring or fall vs fall. 
+
+Measure N2 in the beginning and the end. Apply cover crop in the middle. 
+
+Wants to develop methodology to track change over the year. See if we are goign up or down. Ideally we would like to see the whole data, however a snapshot is acceptable. 
+

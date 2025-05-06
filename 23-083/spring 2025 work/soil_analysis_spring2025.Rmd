@@ -1,0 +1,176 @@
+---
+title: "Soil_analysis_spring2025"
+author: "Sumeeth Guda"
+date: "2025-02-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(readxl)
+library(dplyr)
+library(ggplot2)
+```
+
+## Read in the raw data
+```{r}
+SWPAC_raw = read_excel("SWPAC_Soil_Master file_21_22_23_24.xlsx", sheet = "Sheet1")
+Meigs_raw = read_excel("Meigs_Soil_Master file_21_22_23_24.xlsx", sheet = "Sheet1")
+PPAC_raw = read_excel("PPAC_Soil_Master file_21_22_23_24.xlsx", sheet = "Sheet1")
+```
+
+
+```{r}
+Meigs_raw[Meigs_raw$TAN > 170, ]
+
+hist(Meigs_raw$TAN)
+plot(Meigs_raw$TAN)
+```
+
+
+
+
+## Create new numeric indexes for the treatments
+```{r}
+#final_sequence <- rep(1:13, times = c(3,3,3,3,3,3,3,3,3,3,3,3,3), each = 4)
+final_seq = rep(rep(1:13, each = 3), times = 4)
+
+```
+
+
+## Split the data based off the seasons
+```{r}
+SWPAC_raw_spring = SWPAC_raw[SWPAC_raw$ST == "Spring",]
+SWPAC_raw_fall = SWPAC_raw[SWPAC_raw$ST == "Fall",]
+
+Meigs_raw_spring = Meigs_raw[Meigs_raw$ST == "Spring",]
+Meigs_raw_fall = Meigs_raw[Meigs_raw$ST == "Fall",]
+
+PPAC_raw_spring = PPAC_raw[PPAC_raw$ST == "Spring",]
+PPAC_raw_fall = PPAC_raw[PPAC_raw$ST == "Fall",]
+
+```
+# Add the new trt indexes
+SWPAC_raw_fall$trtid = as.factor(final_seq)
+SWPAC_raw_spring$trtid = as.factor(final_seq)
+Meigs_raw_fall$trtid = as.factor(final_seq)
+Meigs_raw_spring$trtid = as.factor(final_seq)
+PPAC_raw_fall$trtid = as.factor(final_seq)
+PPAC_raw_spring$trtid = as.factor(final_seq)
+
+
+```{r}
+Meigs_raw_fall = Meigs_raw_fall[,c('TRT', "YR", "TAN")]
+SWPAC_raw_fall = SWPAC_raw_fall[,c('TRT', "YR", "TAN")]
+PPAC_raw_fall = PPAC_raw_fall[,c('TRT', "YR", "TAN")]
+
+Meigs_raw_spring = Meigs_raw_spring[,c('TRT', "YR", "TAN")]
+SWPAC_raw_spring = SWPAC_raw_spring[,c('TRT', "YR", "TAN")]
+PPAC_raw_spring = PPAC_raw_spring[,c('TRT', "YR", "TAN")]
+```
+
+```{r}
+Meigs_raw_fall
+PPAC_raw_fall
+SWPAC_raw_spring
+```
+
+
+
+
+## Getting isolating the total available nitrogen from each of the columns
+
+```{r}
+calculate_mean_TAN <- function(data) {
+  data %>%
+    group_by(YR, TRT) %>%
+    summarize(Mean_TAN = mean(TAN, na.rm = TRUE))
+}
+
+datasets <- list(Meigs_raw_fall, Meigs_raw_spring, PPAC_raw_fall, PPAC_raw_spring, SWPAC_raw_fall,SWPAC_raw_spring)
+
+names(datasets) <- c("Meigs_fall", "Meigs_spring", "PPAC_fall", "PPAC_spring", "SWPAC_fall", "SWPAC_spring")
+
+results <- lapply(datasets, calculate_mean_TAN)
+
+# Assign results to variables
+list2env(results, envir = .GlobalEnv)
+
+```
+
+
+```{r}
+Meigs_fall
+```
+
+## Meigs graphs
+```{r}
+anova(lm(Mean_TAN~YR+TRT, Meigs_fall))
+summary(lm(Mean_TAN~YR+TRT, Meigs_fall))
+```
+
+
+```{r}
+anova(lm(Mean_TAN~YR+TRT, Meigs_spring))
+summary(lm(Mean_TAN~YR+TRT, Meigs_spring))
+```
+
+```{r, meigs grpahs}
+
+
+spring_plot = Meigs_spring %>% ggplot(aes(x=YR, y=Mean_TAN, colour = TRT)) + geom_point() + geom_line(aes(x = YR, group = TRT)) + ggtitle("Meigs Plot of Year against spring mean TAN")
+spring_plot
+
+fall_plot = Meigs_fall %>% ggplot(aes(x=YR, y=Mean_TAN, colour = TRT)) + geom_point() + geom_line(aes(x = YR, group = TRT)) + ggtitle("Meigs Plot of Year against fall mean TAN")
+fall_plot
+```
+## PPAC grpahs
+
+```{r}
+anova(lm(Mean_TAN~YR+TRT, PPAC_fall))
+summary(lm(Mean_TAN~YR+TRT, PPAC_fall))
+
+anova(lm(Mean_TAN~YR+TRT, PPAC_spring))
+summary(lm(Mean_TAN~YR+TRT, PPAC_spring))
+```
+
+```{r, PPAC graphs}
+spring_plot = PPAC_spring %>% ggplot(aes(x=YR, y=Mean_TAN, colour = TRT)) + geom_point() + geom_line(aes(x = YR, group = TRT)) + ggtitle("PPAC Plot of Year against spring mean TAN")
+spring_plot
+
+fall_plot = PPAC_fall %>% ggplot(aes(x=YR, y=Mean_TAN, colour = TRT)) + geom_point() + geom_line(aes(x = YR, group = TRT)) + ggtitle("PPAC Plot of Year against fall mean TAN")
+fall_plot
+```
+
+## SWPAC graphs
+
+```{r}
+spring_plot = SWPAC_spring %>% ggplot(aes(x=YR, y=Mean_TAN, colour = TRT)) + geom_point() + geom_line(aes(x = YR, group = TRT)) + ggtitle("SWPAC Plot of Year against spring mean TAN")
+spring_plot
+
+fall_plot = SWPAC_fall %>% ggplot(aes(x=YR, y=Mean_TAN, colour = TRT)) + geom_point() + geom_line(aes(x = YR, group = TRT)) + ggtitle("SWPAC Plot of Year against fall mean TAN")
+fall_plot
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

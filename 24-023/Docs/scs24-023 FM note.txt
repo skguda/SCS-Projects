@@ -1,0 +1,65 @@
+Meeting 9/18/23
+Attendee: Sumeeth Guda, Macy Griffis, Bruce Craig, Georgia Malandraki
+
+Dr. Craig wanted to know about the project
+1 population (15 patients), various tests (water ,pudding, effortful swallow, mednhelson)
+
+3 variables: amplitude, duration, time-to-peak.
+
+4 trials, 2 measurements
+
+Measuing above the voice box
+
+Macy then showed Dr. Craig the design set up and the initial code
+
+Malandraki explained that this project is to teach client statistics as well as help another phd student
+
+Left and right residuals were used to compare the sides
+
+Craig talked about that the functionality of hypohtesis test and that a test-of equivalence could be a better metric to tell if the sides are similar
+
+Taking results and looking at them in a slightly different way: Calculate a CI for the difference between the LR and see how they are big. 
+
+Challeng: THe condifence bound is tricky to gauge
+
+You could use the previous data and combine the past results
+
+We can't tell for certain which side is the good side. However the difference between the sides could get pooled into the noise error. 
+
+At this stage it is too complex for a masters thesis. 
+
+Look into a Tukey test
+
+Key thing: Test left and right seperately for each variable and each task. Don't combine them together. 
+
+Assume left and right are not different. Outcome is the 
+
+
+AIM 1: Summarize the data & Descriptive statistics for the data. (This is where you'd want to show Left and Right are equivalent and use average)
+
+AIM 2: Compare the Amplitude, TTP, BD betweent he maneuvers and typical swallows. 
+
+Craig: IF LR are similar and use average then what i'll have are 4 outcomes per subjects (ES, Mendhelson, 5 ml, 5 pudding) what we want to do is a RCBD (block on subject and have these as the 4 tasks)
+
+What they want to do is see the average of the outcomes. mean_water against mean_mendhelson, mean_effortfulswallow
+
+Craig: Teach Macy how to do this test for at least one of the signals. Don't do the project completely for Macy, teach her the ropes.
+
+MAlandraki: What they are finding through Freddies work is that the liquid and pudding are very similar. Malandraki would not average effortful swallow and mendhelson. 
+
+Craig: Do this after you fit a model with the 4 tasks. And see if these are the same (Look at the average water, average pudding against each rehab. Before you look at the average water * pudding against the rehab to see if there is similar difference)
+
+Malandraki: In scenario where LR not equivalent. You could put side as a variable. This makes the model more complicated and takes away from RCBD assumptions. 
+
+Craig: Can share examples on how to do this analysis. 
+
+Craig: Show Macy where the numerical summaries are to specify mean, sd, etc to show the difference. Show the equivalence test to verify the similarity. 
+
+Time frame: Get this done by 12/01/24. She won't have time next semester due to clinical rotations. 
+
+Goal is to present the results in 02/25
+
+Craig :Sumeet shoudl finish prelim analysis (LR can be combined) and descriptors for summary table on the 3 response variables by end of october. This allows for november to ask a lot of questions. And finish stuff up by december. 
+
+
+

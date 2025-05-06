@@ -1,0 +1,36 @@
+Client: Dr.Erin Dunn
+Attendees: Sumeeth, Antik, Chong, Xiyu Wang (Obs)
+
+Background/Research Problem:
+New faculty member at purdue, has a 1 year NIDCR where she proposes to do analysis to undestand exposure to advaersity and 2 outcomes of dental development and use polygenic risk scores based on brain disorders to look at these outcomes.
+
+She had a data analyst and she only has 4 months left on this grant. She needs help preforming the analysis. All the data is collected, univariates are derived, she needs help running the models. 
+
+She is looking for data analysis help, she needs someone to do the analysis
+
+Has existing code from her lab, potential missing data. 
+
+SCLMA is one piece of the analysis. SHe needs help running the models.  
+
+What is SCLMA? How does it work? How does the data look like? 
+
+Sample size: 700 - 1000
+Variables: 2 outcomes, 5 exposure variables/constructs, 2 variables per construct
+
+- Once she has the model and have the data collected, it isn't that hard to run the model into the computer. - Gu
+
+Client has a plan to their data analysis and data. But the issue is that she doesn't have a data analyst to put the data into the code and do EDA / present the results.
+
+In the case the client has the formulation set, it isn't that hard to run the code. 
+
+How does the model look like? How does the data look like? 
+- Until we see anything we can't do anything on behalf of her as her project sound like a project independent of the responsibilities of the SCS. 
+- We could essentially make this a research posting. 
+
+Dr.Craig and Dr.Ward offered options to her project. 
+
+We are willing to give a hand, but not going to be data analysts without more sprcific pronlems to solve. 
+
+Responsibilities 
+
+Client: Will follow up with position description, share rmd file, and give materials on the SCLMA model. 

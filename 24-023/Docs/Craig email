@@ -1,0 +1,48 @@
+ What you should be fitting are linear mixed models, not standard linear models (should be using lmer not lm).   I sent you code of how to set up those models using lmer().  Did you run into issues and just decided to switch?  Did my code below not work?   Please let me know if you are having problems. 
+
+ 
+
+Reduced model:   lmer(Y~ Task*Side + (1 + Task| Patient), data=Data)
+
+Full model:              lmer(Y~ Task*Side + (1 + Task + Side | Patient), data=Data)
+
+ 
+
+The first step should always be to determine the appropriate covariance structure.  That is what you are supposed to be doing above.  There are different clusters of observations that make up your data set and by fitting these models, you are determining which clusters of observations should be considered correlated.  One way to build correlations is through the inclusion of random effects. 
+
+ 
+
+                Cluster type #1:  Observations from the same subject (8 observations per subject – SUBJECT random
+
+                Cluster type #2:  Observations from the same subject and task combination (2 observations per subject*task – SUBJECT*TASK random)
+
+                Cluster type #3:  Observations from the same subject and side (4 observations per subject*task – SUBJECT*SIDE random)
+
+ 
+
+Clusters #1 and #2 are part of the experimental design and need to be included but that last one does not so that is why you are looking at its inclusion. 
+
+ 
+
+Here is the next step
+
+ 
+
+For the better fitting lmer model, look at the interaction between Task and Side
+If significant, then compare the tasks within each side   (2 comparisons of 4 means)
+If not significant, then compare the tasks using the task main effects  (1 comparison of 4 means)
+ 
+
+These comparison above depend on the covariance structure.  That is why we are assessing that first.   
+
+Best practice says to do this using Kenward-Roger’s adjustment.  This is somewhat challenging in R but a piece of cake in SAS.
+
+Because her design is all balanced, the KR approach likely has not effect but here is how to get the F test for the interaction under the reduced model
+
+ 
+
+amod = :   lmer(Y~ Task*Side + (1 + Task| Patient),Data1, REML=FALSE)
+
+nmod = :   lmer(Y~ Task + Side + (1 + Task| Patient),Data1, REML=FALSE)
+
+KRmodcomp(amod, nmod)

@@ -1,0 +1,92 @@
+25-002 IM notes
+Date: 1/28/25
+Attendees: Sumeeth Guda, Jiawen Zhang, Chong Gu, Nandhini Giri
+
+Background: 
+Client's goal is to integrate digital mandela creation in loving-kindness mediation
+
+What is Mandela: A circular intricate pattern used in Buddhist & Hindu spirittual practices, 
+Traditionally monks draw mandelas on the sand and sweep it into a river before praying for well being
+
+Different colors and patterns have different meanings. 
+
+LKM is love kindness mediation kinda like the headspace and calm app. It is a guided meditation app which guides you in meditation. 
+Its purpose is to help the practice. 
+
+Advisor: They are trying to improve the digital meditation experience
+Comparing a guided meditation vs a mandela meditation and to see if that activity enhances the experience through the cultural practices 
+
+There are limitations with the meditation apps for beginners, mandela is a lot more simple and easier to visualize for beginners.
+There is some discomfort with the app
+
+How the interaction and HCI with the app enhances the experience. 
+
+Looking at the results pre & post incorporating the mandela to see if this enhances the experience. 
+
+How to take the cultural elements of the mandela and use it to improve the overall experience. 
+
+Dr. Gu was a little bit confused on how the belief system would be enacted on the students. Without prior education on the mandela practice, the people who are in the survey might not have experience or know what the meaning of mandela is. Incorporating mandela might not have much difference. 
+
+Giri: They are starting with people who don't have experience with mandela, they aren't interested with the beliefs only the surface level meaning of Mandela. 
+
+If participants don't have prior knowledge of mandela and we collect data from them. It might not add any extra meaning to the analysis and adding a component or not might cause confusion with the participants hence their data might be riddled with errors. 
+
+Giri: It is more like a gamefied version of the activity and comparing it against the app. If they are made to interact with mandela does this have a positive impact on their exposure to the meditation process. 
+
+This extra component might have some significant meaning to some participants but some might not have prior knowledge. 
+
+The other limitation is that they will collect from 30 students in this point and check to see if this has an impact on how they respond. 
+
+Gu: We can anlyze data no problem, but the actual insights could be muddy. Participants prior knowledge can be confounded by 1. Do they know mandala 2. Do they care about the mandala
+Giri: They care more about the Mandala mechanisms to incorporate it into the experiment to track on the difference. 
+
+Gu: The beliefs might be conflicting as it might cause some issues with the aanlysis in the results. Most likely the results will be null since incorporating this mechanism would only benefit a smaller population. 
+
+Data analysis is only comparing the 2 treatments, but those two groups might have the bias due to beliefs
+
+They will be doing a pair comparison within the study since it is pre and post. Given the likert scale questions (individual or subscale)
+
+administer baseline survey
+Round 1: (pre: Lkm, post: LKM)
+1-2 weeks
+Round 2: (pre: lkm with mandela, post; lkm with mandela)
+
+How many times will she administer the FFMQ survey: 3 times, before they administer the tests
+
+First 2 surveys are given in 1 day 2-3 weeks later they give another survey. 
+
+What Gu would suggest is 2 weeks after all testing done is to give another survey. 
+
+Suggestion: Do a pre and post experiment surveys to get the prior conceptions and post experiment sentiments. 
+
+2-3 weeks is good enough washout period for laymen. 
+
+2 different versions of LKM administered 2 weeks apart. They could also split the experiment to break it down to split half the particpants start out with mandela and the other half start off with LKM
+
+This will randomize the order to minimize on the bias / prior bias of the participants. 
+
+Giri: Would formal power analysis be needed for sample size computation? 
+
+Gu: Not necessarily, aggregating the likert scale responses will compute the averages and treat the averages as continuous data. As well as do paired T test on the results. 
+
+If the participants do feel difference you'd need a higher sample size for the experiment. 20-30 is good enough for aggregating. BUt with respect to individuals, you'd need to have more participants to see the differences.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

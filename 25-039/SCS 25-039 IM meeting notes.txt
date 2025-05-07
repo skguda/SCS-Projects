@@ -1,0 +1,62 @@
+SCS 25-039 
+4/2/25
+Attendees: Cris Ferrarezzi, Sumeeth, Dr. Craig, Dr. Whelton
+
+Background: 
+They created a survey to see the fire impact in los angeles, they check the proximity to the fire, health impact on the infividuals (closer -> worse health), analyze electric vehicles impacted (environmental testing) can combine this information with another survey
+
+Craid: How are they sampling for this survey? 
+Cris: There is a community action performing the survey via online and they share the survey link. Additionally she got the impact from the important people. 2 groups (impacted people (in fire perimeter), adjacent people (next to the fire)). Eaton fire had people who were more poor compared to the Palasaides fire (richer people)
+
+Whelton: 1. Online / door-to-doo sample, 2. Send the survey to the important people to send it within the communities. 
+
+FEMA sometimes keeps lists where people are, but opinions of FEMA are being tested in the survey hence it could bias the data to incorporate this data in the survey. 
+
+A lot of the individuals affected generally go to decentralized communication groups via Whatsapp. 
+
+Whelton: There are targeted surveys of fire impact, but this survey contains all possible sources of impact instead of distributing the laod across different surveys. 
+
+Criag: This survey seems more like an exploratory study. 
+
+Whelton: They are exploring all possible impact sources within this survey
+
+Craig: What is the time line, or have they started the survey sampling / do they need IRB approval?
+
+Cris: The survey is basically done, it will be released on 4/3/25 after spanish translation is complete. They will leave the survey open for 30 days. This is because there could be major events made during this point. 
+
+Craig: They seem like they need help regarding the statistical analysis planning. 
+
+The client doesn't have a lot of experience with statitsitcla analysis or programming in R or SAS. 
+
+Craig: Sumeeth can share the intro to R document with client afterwards + give guidance for the language. 
+
+Whelton: We want guidance, and are willing to do authorship on the paper as a collaborator
+
+Craig: Generally we don't get too much involved since there are a lot of clients in the department, but it could be a side hustle
+
+With respect to the hypotheses, there are a lot of questions (Binary yes/no, likert scale, mcq). 
+
+What are the more important hypotheses, because we can't solve all of them but ultimately we can solve a few of them and Sumeeth can write some code using a similar dummy dataset and present the results / methods to cris. 
+
+Whelton: This arrangement sounds good, one of the issues with the type of data is that they are interested in doing outlier analysis for this data. 
+
+Craig: Map the hypothesis to the questions in the survey, it will be useful to indicate which variables are important for each hypothesis. 
+
+Craig: For the approaches, some of the techniques are exploratory + splitting based on the two locations and seeing differences between the groups. It is harder to talk about specifics without knowing a research question in mind. 
+
+For select all that apply questions, make it a series of binary responses. 
+
+Whelton: The results could have an issue sicne there is bias, but he agrees that Cris should map the survey questions to their associated hypotheses. 
+
+Craig: Take 3-4 of the hypotheses create a fake dataset for that type of question, explore the behaviour of the data, do 2-way association between variables, and then do across-association. 
+
+Craid: Sumeeth should do the EDA first, understand the responses from the survey for the investigations before we go into the testing of the data. 
+
+Here is the prior survey: Water safety attitudes, risk perception, experiences, and education for households impacted by the 2018 Camp Fire, California | Natural Hazards
+
+Back to the time line, 5/1 or 5/2 is when they will get the data, but ultimately the SCS is closing down for the semester by that point. With regards to the deadline, since this is based on a dissaster data they need to share the preliminary results as soon as possible. 
+
+They don't need to publish a paper, but they need to create an impact summary report to submit to the community of the individuals affected by fires. They need to give policy makers some results to show that this project is helpful. 
+
+Craig:Look at the 2018 survey paper and see what kind of information they want to share for this initial report. Cris shoudl highlight what information she wants to address within the impact report to share with the policymakers. 
+

@@ -1,0 +1,13 @@
+Figure out why the confounded variables are being dropped. 
+
+Figure out why plm is dropping it, if the variables are completely confounded with each other or if they are highly correlated. 
+
+Figure out the model, and how they are going to do the analysis. Instead of caring about the output. 
+
+If they are interested in determinign if the varaibles create higher disinfo, do this by state & year. Do some prelim analysis to see trends, patterns, and how the data set is structured.
+
+Model most likely did not get their input, consider doing a follow-up meeting. Professors don't know if they are working in the correct direction. 
+
+Gu didn't feel that the project worked under a logical structure. They don't know exactly whats happening. 
+
+Set a follow up meeting. 

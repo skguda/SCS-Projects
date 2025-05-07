@@ -1,0 +1,34 @@
+If she was counting up the number of times certain words/accents were used.
+
+ 
+
+If the transcripts are long (lots of words) then one could fit a mixed effect rate model       
+
+ 
+
+# of occurrences ~ Poisson(lambda| subject random effect))    where log(lambda) = B0 + B1*I_70 + random effect     and you use total number of words as an offset
+
+ 
+
+If she instead classifies the transcript into N_i opportunities with x_i occurrences then he could fit a mixed effects logistic model
+
+ 
+
+                                                                X_i | N_i, random effect   ~ Binomial(N_i, p_i)        with logit(p_i) = B0 + B1 I_70 + random effect
+
+ 
+
+In other words, each subject may have its own rate or probability but these probabilities vary around a mean for the 70s and a mean for the 90s
+
+FM Edit notes: 
+
+Craig: 
+These control variables should all be fixed effects.  The only random effect is country (and possibly its interactions).  We could also take country out of the model and build correlation among the errors of a specific country. 
+
+Feel free to fit the fixed effects model with these control variables to verify if there are any strong correlations among them or the other fixed effects. 
+
+This project has been plagued from the beginning of her jumping right into the complicated models and trying to understand problems with these fits without a thorough understanding of the data.  What really is needed is to first explore the data to see what sort of models make sense to consider.  You need to come in and help guide her through this model building process.   Start simple and build to the more complex.  What variables vary by country and what variables vary by year within country?  You could also first look at models for each year (thereby ignoring the repeated measures issue)   
+
+The fact that country might be considered random does not really change the complexity too much so if you first want to consider everything as fixed, go right ahead.  This ignores the repeated measures nature of the data but will allow you to understand the general structure and whether some variables are correlated with country.  
+
+

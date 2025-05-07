@@ -1,0 +1,119 @@
+Project background: 
+Part of phd disserttion, built theory around piliticians manipulation 
+domestic opinions in democracy. 
+
+in this theory chapter, she needs help using existing data inv arieties of democravy project, (3-5 country excperts who rate counteies on democracy metrics wrt longitidal data
+
+main dependent variable: the extent which politiancs maniulate data
+iid variable: polarization, media fractionalization. 
+
+She tests this theory using expert survey data under all democracies as control. 
+
+She is only working on democratic countries in sample. With majoritian electoral system. 
+
+She needs help with regression analysis, hew problem is fixed effect model but when she adds control varibale it is dropping thedummy variable. 
+
+dummy varibale is label of electoral system. Is bding dropped. 
+She might need a new type of model. as she needs to include the dummy variable. 
+
+She isn't able to use fixed effects as she can't test it on multiple countries. 
+
+Mixed effect model. 
+
+The way she is collecting the data, she doesnn't have a way to deal with inter-rater variability. This is causing convergence issues. 
+
+Significance fades away. Studying mechanisms on disinformation of politicians with stablished data. 
+
+Wants this to be job market paper, but publication wise. Ideally wants to finish in JUly 2024. But needs to figure out basic regressions. 
+
+
+What was done in spring 2024: 
+
+
+
+
+
+What she needs completed in summer 2024: 
+
+
+
+#####################################
+Data set Description 7/1/24
+#####################################
+
+Countries: 100 --- All Democracies
+
+Time frame: 2018-2023 --- 5 year time frame
+
+Response variable (Dummy): Majoritarian (0,1) --- Does the democracy have an majoritatrian electoral system. 1 indicates that majoritarian system exists
+
+Important predictor variables: 
+
+media_frac, polarization, 
+
+Possible predictor variables: 
+country_id --- numerical encoding
+
+Client's main concern is that she just wants to do regression using the above predictors and response, but the fixed effect approach doesn't seem to be working. 
+When she introduces a control variable, her model drops the dummy variable. 
+
+Questions to ask client tomorrow 7/2/24: 
+
+- Recommend logit regresion 
+- does media frac / polarization change over time. 
+- Compare 2018 total, every country is either 0 or 1 based on the majoritarian tystenm and you have the preds based in 2018. Check the preds based on resonse in 2018. 
+- Explore average media predictor prescence vs average majoritarian system. Simplify the model to logit response
+- Clarfiy again what they mean by dropping the dummy variable. 
+- Understand whats going on within each country, averaging over time, how she is building model with this only chunk of time. 
+- Put your foot down, potentialyl use simplified code to do between country analysis. ALso give example code. 
+
+
+How is the dummy variable being dropped: 
+disinfo6_analysis
+
+Dependent variable is disinfo
+disinfo ~ as.factor(majoritarian) + polarization
+
+- When she shortens time span, she deals with multicollinearity issues.  
+- Analyzing over time and seeing how politicians 
+- Not analyzing data across one chunk, chunking the data will make the mdoel less accurate and raise the error. 
+- Trying one model to begin with to get it to work. 
+- Using FE model to analyze all the countries over time. Not comparing the countries, only analyzing change in the country to begin with. Does country with high polarization and media frac increase disinformation. 
+
+
+MOdel works using the model= "between", it does not work and drops the variables using model = "within"
+
+When she adds the data from reuters, it drops her factorial variables. 
+
+Data isn't super reliable, hence why she had to shorten the time span. But doing this doesn't allow the model to run. 
+
+Ask prof's about GAM's
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

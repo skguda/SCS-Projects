@@ -1,0 +1,77 @@
+Client 25-027
+3/4/25
+Attendees: Patrick Kiel, Michael Preston, Dr. Gu, Sumeeth
+
+Notes: 
+Patrick is a pharmacy grad student looking at real world evidence generation within the NIH dataset looking a
+
+All of the 1 million data Patrick is looking at is NIH privatized discrete data  (we can't access it)
+
+HE is looking at time to treatment and overall survival with the treatments of drug induced chemo
+
+His second question is a nominal suvery based question about demographics for which treatment plans a patient receives.
+
+Gu: Who makes decision patient or physician? 
+- It should be a mutual decision, but mostly on the physician. 
+
+Gu: For different training of the physican it could have an influence
+- This could be the case, but physicians are following guidelines which are standardized. 
+
+For the survey question he is analyzing the data across 340 .
+
+The response of the second question is based on wether patients have access to genome based cancer treatment vs only having access to standard chemo. 
+
+Gu: Instead of logistic regression, he might want to do a pseudo-classification approach for question 2.
+How many social determinants they have available: 
+- Roughly 6 varaibles are social determinants which were chosen from domain knowledge
+
+Gu would compare the 2 populations(based on therapy). Use these therapies as 2 clusters, and usign social determinants compare each of the groups. 
+
+If it is a cts variable do a side by side boxplot or overlain histogram. He wants to visually see if there are differences. If it is categorical do a 2 way table to see the treatment plans against each social determinant and see if htere is a clear cut point somehow ans see how things segregate between the 2 trt plans. 
+
+Eventually clustering / classification / multivariate could be use but start simple first. Often time the EDA and visualiztion reveals patterns, but in 2-d the patterns are harder to detece between the groups. 
+
+Do this to see the clear seperation of not. BEtween logistic regression and classifcation. IF there is relatively clear separation, use classification since logit regression is numerically harder to detece the seperation of the social determinants of the groups. 
+
+There was no interaction effects. Patrick did not complete and model selection or multicollinearity analysis. 
+
+Gu: Do stepwise regression and see if R would include the interaction terms. If he believes that the coefficient is significant and necessary for the question, keep it in the model to see its quantifiable impact. 
+
+Stepwise is good to track on the screening with domain knowledge. Some interactions that play a role should still be included. Don't completely rely on the machine for the model selection, use domain knowledge. 
+
+With respect to AIC, with categorical predictiors there should be no collinearity but if he is concerned make a 2 way table and see if there are cells which are overpacked. 
+
+Gu: For the first research question, client is interested in overall survival and treatment termination
+Neither of these two things touch cox model. Cox tracks how certain conditions increase or decrease the hazard. Based solely on the failure rat.e 
+
+If he is concerned with overall survival & trt term. It is tracked by the response. 
+
+There is some censoring in the data. Patients were censored before july 1 2022. There was a time delay with uploading the data into the EHR, and there is 20-25% missing data. 
+
+Overall survival has 90-95% missing (no death date). 
+
+All the patients had stage 4 lung cancer (They only had 24 months to live). The data was collected from their first treatment date. 
+
+There were 1 million plus patients in the master data set and he doesn't have the baseline performance. 
+
+Gu: Is termination of therapy based on the condition based on time of the termination? 
+- Patients stop after they see the cancer progressing too far or the threapy becomes too toxic. 
+
+The items in the survival analysis are static covariates. Once patient is put into a treatment group, they undergo an adapted to each patient type of target therapy. 
+
+Since it is adapted to each patient, the data is tracked every 6-8 weeks. If there is no progress thed doc can also terminate the treatment. 
+
+This data should be clustered about a grid point. 
+
+Gu: He doesn't have accurate measures so for the survival such a heavy censoring could lead to us assessing the overall survival. Maybe the cox model is the best he can do, however with cox model check to see instantaneous failure. These patients are still alive and under the survailance. 
+Locally its likle a multinomial scenario, with different categories. We have multinomial probability and checking their dependence based on the covariates. It doesn't assess the overall survival but it checks instantaneous failure rate. 
+
+The overall survival model isn't feasible due to the censoring of the current data. If he has more complete data, use the time to failute and ordinay regression for the overall response without censoring. 
+Look at the lifetime data and regress on the independent variables. OVerall feel is like a count response compared to a cts response. 
+
+When he converts to count, the time periods won't be uniform in terms of the length. Count how many checkups the therapy lasts. Rather than the actual duration see how many checkups the therapy endures. Wether its weeks or months, that is irrelevant. 
+
+With respect to missing data, a lot of the treatment data is missing, but what is more concerning is some of the data from the baseline is missing / censored. Missing data from the baseline needs to be redacted we can't salvage this. 
+
+If imputation is used, it could impose bias and make insignificant variables appear significant.
+
